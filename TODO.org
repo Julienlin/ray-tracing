@@ -58,3 +58,5 @@ maybe uniformed or not
 * TODO Create a file loader for loading scene file description
 
 * TODO Do some Shading
+* TODO Make a simple engine of ray casting
+* TODO Make an ray tracing engine
