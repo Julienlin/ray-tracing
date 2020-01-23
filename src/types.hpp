@@ -1,6 +1,7 @@
 #ifndef __TYPES_H_
 #define __TYPES_H_
 
+#include <cmath>
 #include <cstdint>
 #include <tuple>
 
@@ -12,13 +13,18 @@ public:
   position_t(const position_t &pos) = default;
   position_t(position_t &&pos) = default;
 
+  position_t operator/(const double c);
   double operator*(const position_t pos);
   position_t operator*(const double c);
   position_t operator+(const position_t &pos);
   position_t operator-(const position_t &pos);
+  position_t& operator=(const position_t &pos);
   position_t &operator+=(const position_t &pos);
   position_t &operator-=(const position_t &pos);
   position_t &operator*=(const double coef);
+  double norm();
+  static double norm(const position_t &pos);
+  position_t &normalize();
 
   // double norm(){ return  }
   // double getX(){ return x; }

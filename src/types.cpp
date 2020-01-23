@@ -6,6 +6,14 @@ position_t position_t::operator+(const position_t &pos) {
 position_t position_t::operator-(const position_t &pos) {
   return position_t(x - pos.x, y - pos.y, z - pos.z);
 }
+
+position_t& position_t::operator=(const position_t &pos){
+  x=pos.x;
+  y=pos.y;
+  z=pos.z;
+  return *this;
+}
+
 position_t &position_t::operator+=(const position_t &pos) {
   x += pos.x;
   y += pos.y;
@@ -33,7 +41,25 @@ position_t position_t::operator*(const double c) {
   return position_t(x * c, y * c, z * c);
 }
 
-void RGBColor::swap(RGBColor &other){
+position_t position_t::operator/(const double c) {
+  return position_t(x / c, y / c, z / c);
+}
+
+double position_t::norm() { return std::sqrt(x * x + y * y + z * z); }
+
+double position_t::norm(const position_t &pos){
+  return std::sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+}
+
+position_t& position_t::normalize(){
+  double norm = this->norm();
+  x /= norm;
+  y /= norm;
+  z /= norm;
+  return *this;
+}
+
+void RGBColor::swap(RGBColor &other) {
   uint8_t buf = m_red;
   m_red = other.m_red;
   other.m_red = buf;
