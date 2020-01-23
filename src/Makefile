@@ -1,0 +1,17 @@
+##
+# ray-tracing
+#
+# @file
+# @version 0.1
+
+CXX = g++
+CXXFLAGS = --std=c++11 -Wall -fdiagnostics-color=always
+EXEC = rayTracing
+SOURCES = types.o scene_sphere.o ray_engine.o main.o
+
+%.o : %.c
+	$(CXX) $(CXXFLAGS) -c -o $@ $^
+
+rayTracing : $(SOURCES)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+# end
