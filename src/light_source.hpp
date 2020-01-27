@@ -3,13 +3,17 @@
 
 #include "types.hpp"
 
-class LightSource  {
+class LightSource {
 private:
   position_t m_pos;
-        // TODO: add color with sfml.
+  double m_intensity;
+  double m_diffusion;
+
 public:
-  LightSource();
+  LightSource(position_t &pos, double &intensity, double &diffusion);
   virtual ~LightSource();
+  double get_intensity();
+  double get_diffusion();
 };
 
 #endif // __LIGHT_SOURCE_H_
