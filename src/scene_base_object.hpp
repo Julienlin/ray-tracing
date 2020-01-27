@@ -37,6 +37,8 @@ public:
    * @return the normal to the surface passing by POS.
    */
   virtual vector_t getNormal(position_t &pos) = 0;
+
+  ObjectBaseSurface* getSurface();
 };
 
 #endif // __SCENE_BASE_OBJECT_H_
