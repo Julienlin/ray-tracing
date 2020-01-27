@@ -1,22 +1,20 @@
 #+TITLE: TODO
+#+TAGS: RAY_TRACING
 
-* TODO Posséder une bibliothèque d’objets relativement riches permettant de décrire une scène à générer la plus réaliste possible.
+* TODO Posséder une bibliothèque d’objets relativement riches permettant de décrire une scène à générer la plus réaliste possible. :RAY_TRACING:
+DEADLINE: <2020-01-28 mar.>
 
+* TODO Supporter les textures, couleurs, transparences et réflexions (avec atténuation). :RAY_TRACING:
 
-* TODO Supporter les textures, couleurs, transparences et réflexions (avec atténuation).
+* TODO  Définir un langage permettant de positionner les objets et créer de nouveaux objets par composition d’objets. :RAY_TRACING:
 
-* TODO  Définir un langage permettant de positionner les objets et créer de nouveaux objets par composition d’objets.
+* TODO Proposer une bibliothèque proposant des classes génériques encapsulant différents moteurs de lancer de rayons. Cette bibliothèque devrait permettre d’ajouter progressivement des versions améliorées des moteurs de lancer de rayons. :RAY_TRACING:
 
-* TODO Proposer une bibliothèque proposant des classes génériques encapsulant différents moteurs de lancer de rayons. Cette bibliothèque devrait permettre d’ajouter progressivement des versions améliorées des moteurs de lancer de rayons.
+* TODO Implanter un programme de génération d’images permettant d’éditer les fichiers de description de scènes, de sélectionner un moteur et de lancer la génération de la scène et d’en afficher le résultat. :RAY_TRACING:
 
-* TODO Implanter un programme de génération d’images permettant d’éditer les fichiers de description de scènes, de sélectionner un moteur et de lancer la génération de la scène et d’en afficher le résultat.
+* TODO Proposer au moins un moteur utilisant soit le parallélisme soit l’utilisation des GPU pour accélérer le calcul. :RAY_TRACING:
 
-
-
-
-* TODO  Proposer au moins un moteur utilisant soit le parallélisme soit l’utilisation des GPU pour accélérer le calcul.
-
-* TODO Creation of /Light_Source/ object.
+* TODO Creation of /Light_Source/ object. :RAY_TRACING:
 ** Attributes
 *** Color
 ** Behaviors
@@ -26,7 +24,7 @@
 *** bool Is_omnidirectional()
 return true if the light source is omnidirectionnal and false if not.
 
-* TODO Création d'un objet /Light/
+* TODO Création d'un objet /Ray/ :RAY_TRACING:
 This Class represent a ray of light.
 It has a origin in 3D space, a speed vector and a color.
 It has also other properties such as intensity (maybe).
@@ -38,7 +36,7 @@ It has also other properties such as intensity (maybe).
 *** Can determine from which pixel the ray come from.
 ** Methods
 
-* TODO Création d'un objet de base
+* TODO Création d'un objet de base :RAY_TRACING:
 The aim is to create a evolutive class with evolutive behavior
 ** Attributes
 *** Shape
@@ -55,8 +53,9 @@ maybe uniformed or not
 ** Methods
 *** A function that determine whether a ray is intersect the object itself.
 *** A function that can generate the reflected ray and the diffracted ray.
-* TODO Create a file loader for loading scene file description
+* TODO Create a file loader for loading scene file description :RAY_TRACING:
 
-* TODO Do some Shading
-* TODO Make a simple engine of ray casting
-* TODO Make an ray tracing engine
+* TODO Do some Shading :RAY_TRACING:
+* PROCESSING Make a simple engine of ray casting :RAY_TRACING:
+- State "PROCESSING" from "TODO"       [2020-01-27 lun. 12:50]
+* TODO Make an ray tracing engine :RAY_TRACING:
