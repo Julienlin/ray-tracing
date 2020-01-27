@@ -4,7 +4,7 @@
 # @file
 # @version 0.1
 
-CXX = g++
+CXX = clang++
 CXXFLAGS = --std=c++11 -Wall -fdiagnostics-color=always
 EXEC = rayTracing
 SOURCES = types.o scene_sphere.o ray_engine.o main.o
@@ -14,4 +14,8 @@ SOURCES = types.o scene_sphere.o ray_engine.o main.o
 
 rayTracing : $(SOURCES)
 	$(CXX) $(CXXFLAGS) -o $@ $^
+
+clean :
+	rm $(SOURCES)
+	rm $(EXEC)
 # end
