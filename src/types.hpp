@@ -52,6 +52,7 @@ public:
   RGBColor(const RGBColor &color) = default;
   RGBColor(RGBColor &&color) = default;
   void swap(RGBColor &other);
+  RGBColor& operator=(const RGBColor&);
 };
 
 void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }

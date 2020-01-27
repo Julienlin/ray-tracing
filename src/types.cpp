@@ -72,3 +72,11 @@ void RGBColor::swap(RGBColor &other) {
   m_blue = other.m_blue;
   other.m_blue = buf;
 }
+
+
+RGBColor& RGBColor::operator=(const RGBColor& color){
+  m_red = color.m_red;
+  m_blue = color.m_blue;
+  m_green = color.m_green;
+  return *this;
+}
