@@ -30,7 +30,7 @@ public:
   SurfaceUniformedColor(const SurfaceUniformedColor &surface) = default;
   SurfaceUniformedColor(SurfaceUniformedColor &&surface) = default;
   virtual ~SurfaceUniformedColor(){};
-  RGBColor getColor(position_t pos) { return color; }
+  RGBColor getColor(position_t& pos) { return color; }
 };
 
 #endif // __OBJECT_BASE_SURFACE_H_
