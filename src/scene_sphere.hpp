@@ -38,7 +38,7 @@ public:
    *
    * @return the normal to the surface passing by POS.
    */
-  vector_t getNormal(position_t &pos);
+  vector_t getNormal(const position_t &pos);
 };
 
 #endif // __SCENE_SPHERE_H_

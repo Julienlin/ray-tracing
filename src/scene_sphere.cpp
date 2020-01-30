@@ -11,6 +11,7 @@ double SceneSphere::intersecDist(const Ray &ray) {
   return res;
 }
 
-vector_t SceneSphere::getNormal(position_t &pos) {
-  return vector_t(pos - m_center).normalize();
+vector_t SceneSphere::getNormal(const position_t &pos) {
+  auto position = pos;
+  return vector_t(position - m_center).normalize();
 }
