@@ -10,10 +10,11 @@ private:
   double m_diffusion;
 
 public:
-  LightSource(position_t &pos, double &intensity, double &diffusion);
-  virtual ~LightSource();
+  LightSource(position_t &, double &, double &);
+  virtual ~LightSource() {}
   double get_intensity();
   double get_diffusion();
+  position_t get_pos();
 };
 
 #endif // __LIGHT_SOURCE_H_

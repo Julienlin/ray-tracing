@@ -6,3 +6,7 @@ LightSource::LightSource(position_t &pos, double &intensity,
 
 double LightSource::get_intensity(){ return m_intensity; }
 double LightSource::get_diffusion(){ return m_diffusion; }
+
+position_t LightSource::get_pos(){
+    return m_pos;
+}
