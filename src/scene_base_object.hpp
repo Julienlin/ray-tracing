@@ -4,14 +4,21 @@
 #include "objet_base_surface.hpp"
 #include "ray.hpp"
 #include "types.hpp"
+#include "utils.hpp"
 
 class SceneBaseObject {
 protected:
   ObjectBaseSurface *m_surface;
+  double m_spec_reflect, m_diff_reflect, m_amb_reflect, m_shine;
 
 public:
   SceneBaseObject() : m_surface(nullptr){};
-  SceneBaseObject(ObjectBaseSurface *surface) : m_surface(surface) {}
+  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 1.,
+                  double diff_reflect = 1., double amb_reflect = 1.,
+                  double shine = 1.)
+      : m_surface(surface), m_spec_reflect(spec_reflect),
+        m_diff_reflect(diff_reflect), m_amb_reflect(amb_reflect),
+        m_shine(shine) {}
   SceneBaseObject(const SceneBaseObject &obj) = default;
   SceneBaseObject(SceneBaseObject &&obj) = default;
   virtual ~SceneBaseObject(){};
@@ -36,9 +43,13 @@ public:
    *
    * @return the normal to the surface passing by POS.
    */
-  virtual vector_t getNormal(position_t &pos) = 0;
+  virtual vector_t getNormal(const position_t &pos) = 0;
 
-  ObjectBaseSurface* getSurface();
+  ObjectBaseSurface *getSurface();
+  double get_spec_reflect() { return m_spec_reflect; }
+  double get_diff_reflect() { return m_diff_reflect; }
+  double get_amb_reflect() { return m_amb_reflect; }
+  double get_shine() { return m_shine; }
 };
 
 #endif // __SCENE_BASE_OBJECT_H_
