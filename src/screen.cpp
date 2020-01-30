@@ -3,8 +3,8 @@
 Screen::Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
                position_t screen_pos)
     : m_H(H), m_W(W), m_pix_size(pix_size), m_v_H(v_H), m_v_W(v_H),
-      m_screen_pos(screen_pos), m_pixels(m_H * m_W), m_pix_pos(m_H * m_W) {
-  int n = m_H * m_W;
+      m_screen_pos(screen_pos), m_pixels(m_H * m_W), m_pix_pos(m_H * m_W), m_crossing_rays() {
+  // int n = m_H * m_W;
   m_pix_pos[0] = position_t(m_screen_pos);
   double half_px_size = m_pix_size / 2;
   vector_t cur_v_H = m_v_H;
@@ -21,4 +21,16 @@ Screen::Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
       cur_v_H += m_v_H;
   }
 
+}
+
+RGBColor& Screen::operator[](int i){
+  return m_pixels[i];
+}
+
+position_t& Screen::operator()(int i){
+  return m_pix_pos[i];
+}
+
+void Screen::add_crossing_ray(int i, Ray &ray){
+ m_crossing_rays[i].push_back(ray);
 }

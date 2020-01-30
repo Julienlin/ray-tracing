@@ -1,6 +1,7 @@
 #ifndef __SCREEN_H_
 #define __SCREEN_H_
 
+#include "ray.hpp"
 #include "types.hpp"
 #include <utility>
 #include <vector>
@@ -21,9 +22,12 @@ private:
                               define the center of the pixel.*/
   std::vector<RGBColor> m_pixels;
 
+
   std::vector<position_t>
       m_pix_pos; /**<  Vector of position that refers to the center of pixel
                 (i,j) (W,H) by [ j * m_W + i ] */
+
+  std::vector<std::vector<Ray>> m_crossing_rays;
 
 public:
   Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
@@ -32,6 +36,25 @@ public:
   ~Screen() {}
   int H() { return m_H; }
   int W() { return m_W; }
+  /**
+   * Get the color of the pixel i.
+   *
+   * @param i linearize index of the pixel.
+   *
+   * @return color of the pixel i.
+   */
+  RGBColor &operator[](int i);
+
+  /**
+   * Get the position_t of the center of the pixel i.
+   *
+   * @param i linearize index of the pixel.
+   *
+   * @return position_t of the center of the pixel i.
+   */
+  position_t &operator()(int i);
+
+  void add_crossing_ray(int i, Ray& ray);
 };
 
 #endif // __SCREEN_H_
