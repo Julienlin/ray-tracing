@@ -35,9 +35,7 @@ public:
   // void setZ(double i){ z = i; }
 };
 
-position_t operator*(const double coef, const position_t pos) {
-  return position_t(pos.x * coef, pos.y * coef, pos.z * coef);
-}
+position_t operator*(const double , const position_t );
 
 using vector_t = position_t;
 
@@ -53,9 +51,12 @@ public:
   RGBColor(RGBColor &&color) = default;
   void swap(RGBColor &other);
   RGBColor& operator=(const RGBColor&);
+  RGBColor operator*(const double&) const;
 };
 
-void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }
+
+void swap(RGBColor &, RGBColor &);
+RGBColor operator*(const double d, const RGBColor& color );
 
 const position_t POSITION_T_NULL = position_t(0, 0, 0);
 #endif // __TYPES_H_

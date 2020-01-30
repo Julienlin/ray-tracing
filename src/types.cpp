@@ -80,3 +80,17 @@ RGBColor& RGBColor::operator=(const RGBColor& color){
   m_green = color.m_green;
   return *this;
 }
+
+RGBColor RGBColor::operator*(const double& d) const {
+  return RGBColor(m_red * d, m_green * d, m_blue * d);
+}
+
+RGBColor operator*(const double d, RGBColor& color ){
+  return color * d;
+}
+
+void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }
+
+position_t operator*(const double coef, const position_t pos) {
+  return position_t(pos.x * coef, pos.y * coef, pos.z * coef);
+}
