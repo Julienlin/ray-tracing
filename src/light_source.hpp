@@ -11,6 +11,7 @@ private:
 
 public:
   LightSource(position_t &, double &, double &);
+  LightSource(position_t , double, double);
   virtual ~LightSource() {}
   double get_intensity();
   double get_diffusion();
