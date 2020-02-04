@@ -45,7 +45,7 @@ public:
    */
   virtual vector_t getNormal(const position_t &pos) = 0;
 
-  ObjectBaseSurface *getSurface();
+  ObjectBaseSurface *getSurface() { return m_surface; }
   double get_spec_reflect() { return m_spec_reflect; }
   double get_diff_reflect() { return m_diff_reflect; }
   double get_amb_reflect() { return m_amb_reflect; }
