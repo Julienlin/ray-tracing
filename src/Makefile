@@ -5,7 +5,7 @@
 # @version 0.1
 
 CXX = clang++
-CXXFLAGS = --std=c++11 -Wall -fdiagnostics-color=always
+CXXFLAGS = --std=c++11 -g -Wall -fdiagnostics-color=always
 EXEC = rayTracing
 SOURCES = types.o ray.o  light_source.o screen.o scene_sphere.o ray_engine.o main.o
 
