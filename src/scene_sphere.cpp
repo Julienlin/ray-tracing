@@ -15,3 +15,16 @@ vector_t SceneSphere::getNormal(const position_t &pos) {
   auto position = pos;
   return vector_t(position - m_center).normalize();
 }
+
+
+Ray SceneSphere::generateReflectionRay(const Ray &incident){
+  return Ray();
+}
+
+Ray SceneSphere::generateRefractionRay(const Ray &incident){
+  return Ray();
+}
+
+genRays_t SceneSphere::generateRays(const Ray &incident){
+  return genRays_t(generateRefractionRay(incident),generateReflectionRay(incident));
+}
