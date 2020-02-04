@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdint>
 #include <tuple>
+#include <ostream>
 
 class position_t {
 public:
@@ -36,27 +37,34 @@ public:
 };
 
 position_t operator*(const double , const position_t );
+position_t operator*( double ,  position_t );
 
 using vector_t = position_t;
 
 class RGBColor {
 private:
-  std::uint8_t m_red, m_green, m_blue;
+  unsigned char m_red, m_green, m_blue;
 
 public:
   RGBColor() : m_red(0), m_green(0), m_blue(0) {}
-  RGBColor(std::uint8_t red, std::uint8_t green, std::uint8_t blue)
+  RGBColor(unsigned char red, unsigned char green, unsigned char blue)
       : m_red(red), m_green(green), m_blue(blue) {}
   RGBColor(const RGBColor &color) = default;
   RGBColor(RGBColor &&color) = default;
   void swap(RGBColor &other);
   RGBColor& operator=(const RGBColor&);
   RGBColor operator*(const double&) const;
+  friend std::ostream& operator<<( std::ostream& os, const RGBColor& color);
 };
 
 
 void swap(RGBColor &, RGBColor &);
-RGBColor operator*(const double d, const RGBColor& color );
+RGBColor operator*(double , const RGBColor& );
 
 const position_t POSITION_T_NULL = position_t(0, 0, 0);
+const vector_t E1 = vector_t(1,0,0);
+const vector_t E2 = vector_t(0,1,0);
+const vector_t E3 = vector_t(0,0,1);
+const RGBColor RGB_WHITE = RGBColor(255,255,255);
+const RGBColor RGB_BLACK = RGBColor(0,0,0);
 #endif // __TYPES_H_

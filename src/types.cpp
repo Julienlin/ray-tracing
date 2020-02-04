@@ -85,12 +85,22 @@ RGBColor RGBColor::operator*(const double& d) const {
   return RGBColor(m_red * d, m_green * d, m_blue * d);
 }
 
-RGBColor operator*(const double d, RGBColor& color ){
+RGBColor operator*(double d, const RGBColor& color ){
   return color * d;
 }
 
 void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }
 
-position_t operator*(const double coef, const position_t pos) {
+position_t operator*( double coef, const position_t& pos) {
   return position_t(pos.x * coef, pos.y * coef, pos.z * coef);
+}
+
+position_t operator*( double c ,  position_t pos ){
+  return position_t(c * pos.x, c* pos.y, c * pos.z);
+}
+
+
+std::ostream& operator<<( std::ostream& os, const RGBColor& color){
+  os << color.m_red << color.m_green << color.m_blue;
+  return os;
 }
