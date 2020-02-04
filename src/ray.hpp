@@ -5,13 +5,13 @@
 #include "types.hpp"
 #include <utility>
 
-class Ray {
+class Ray
+{
 private:
   position_t m_pos;
   vector_t m_direction;
   double m_intensity;
   RGBColor m_color;
-  Ray *m_fondamental;
 
 public:
   Ray()
@@ -20,10 +20,9 @@ public:
   Ray(position_t pos, vector_t direction, double intensity, RGBColor color,
       Ray *fondamental = nullptr)
       : m_pos(pos), m_direction(direction), m_intensity(intensity),
-        m_color(color), m_fondamental(fondamental) {}
+        m_color(color) {}
   Ray(position_t pos, vector_t direction)
-      : m_pos(pos), m_direction(direction), m_intensity(0), m_color(),
-        m_fondamental(nullptr) {}
+      : m_pos(pos), m_direction(direction), m_intensity(0), m_color() {}
 
   position_t getPos() const { return m_pos; };
   vector_t getDirection() const { return m_direction; }
