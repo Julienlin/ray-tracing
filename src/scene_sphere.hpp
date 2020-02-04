@@ -4,11 +4,13 @@
 #include "light_source.hpp"
 #include "scene_base_object.hpp"
 #include "types.hpp"
-#include <vector>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <vector>
 
-class SceneSphere : public SceneBaseObject {
+class SceneSphere : public SceneBaseObject
+{
 private:
   position_t m_center;
   double m_radius;
