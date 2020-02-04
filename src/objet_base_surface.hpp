@@ -5,7 +5,6 @@
 
 class ObjectBaseSurface {
 public:
-  ObjectBaseSurface();
   virtual ~ObjectBaseSurface(){};
   virtual RGBColor getColor(position_t &pos) = 0;
 };
