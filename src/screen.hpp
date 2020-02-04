@@ -5,6 +5,8 @@
 #include "types.hpp"
 #include <utility>
 #include <vector>
+#include <fstream>
+#include <string>
 
 class Screen {
 private:
@@ -21,7 +23,6 @@ private:
   position_t m_screen_pos; /**< position of the of the most top left pixel. It
                               define the center of the pixel.*/
   std::vector<RGBColor> m_pixels;
-
 
   std::vector<position_t>
       m_pix_pos; /**<  Vector of position that refers to the center of pixel
@@ -54,7 +55,9 @@ public:
    */
   position_t &operator()(int i);
 
-  void add_crossing_ray(int i, Ray& ray);
+  void add_crossing_ray(int i, Ray &ray);
+
+  bool write(const std::string& );
 };
 
 #endif // __SCREEN_H_
