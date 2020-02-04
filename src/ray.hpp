@@ -36,6 +36,6 @@ public:
   Ray &operator=(const Ray &);
 };
 
-using genRays_t = std::tuple<Ray, Ray, Ray>;
+using genRays_t = std::tuple<Ray, Ray>;
 
 #endif // __RAY_H_
