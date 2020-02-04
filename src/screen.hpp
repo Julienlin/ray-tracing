@@ -3,12 +3,13 @@
 
 #include "ray.hpp"
 #include "types.hpp"
-#include <utility>
-#include <vector>
 #include <fstream>
 #include <string>
+#include <utility>
+#include <vector>
 
-class Screen {
+class Screen
+{
 private:
   int m_H;
   int m_W;
@@ -57,7 +58,7 @@ public:
 
   void add_crossing_ray(int i, Ray &ray);
 
-  bool write(const std::string& );
+  bool write(const std::string &);
 };
 
 #endif // __SCREEN_H_
