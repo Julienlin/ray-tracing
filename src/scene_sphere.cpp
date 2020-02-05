@@ -28,8 +28,7 @@ double SceneSphere::intersecDist(const Ray &ray)
 
 vector_t SceneSphere::getNormal(const position_t &pos)
 {
-  auto position = pos;
-  return vector_t(position - m_center).normalize();
+  return vector_t(pos - m_center).normalize();
 }
 
 Ray SceneSphere::generateReflectionRay(const Ray &incident)
