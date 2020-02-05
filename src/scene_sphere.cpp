@@ -1,5 +1,8 @@
 #include "scene_sphere.hpp"
 
+SceneSphere::SceneSphere(ObjectBaseSurface *surface, position_t center, double radius)
+    : SceneBaseObject(surface), m_center(center), m_radius(radius) {}
+
 double SceneSphere::intersecDist(const Ray &ray)
 {
   position_t v = ray.getPos() - m_center;
