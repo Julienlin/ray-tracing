@@ -90,6 +90,20 @@ bool position_t::operator==(const position_t &pos)
   return x == pos.x && y == pos.y && z == pos.z;
 }
 
+position_t operator*(double coef, const position_t &pos)
+{
+  return position_t(pos.x * coef, pos.y * coef, pos.z * coef);
+}
+
+position_t operator*(double c, position_t pos)
+{
+  return position_t(c * pos.x, c * pos.y, c * pos.z);
+}
+
+/***********************************************************
+ *  RGBColor function definitions.
+ ***********************************************************/
+
 std::ostream &
 operator<<(std::ostream &os, const position_t &pos)
 {
@@ -130,21 +144,16 @@ RGBColor operator*(double d, const RGBColor &color)
   return color * d;
 }
 
+RGBColor RGBColor::operator+(const RGBColor &c) const
+{
+  return RGBColor(cap(m_red + c.m_red), cap(m_green + c.m_green), cap(m_blue + c.m_blue));
+}
+
 void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }
 
 unsigned char RGBColor::cap(unsigned c) const
 {
   return c > threshold ? threshold : c;
-}
-
-position_t operator*(double coef, const position_t &pos)
-{
-  return position_t(pos.x * coef, pos.y * coef, pos.z * coef);
-}
-
-position_t operator*(double c, position_t pos)
-{
-  return position_t(c * pos.x, c * pos.y, c * pos.z);
 }
 
 std::ostream &operator<<(std::ostream &os, const RGBColor &color)
