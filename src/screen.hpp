@@ -35,7 +35,7 @@ private:
   vector_t m_normal;
 
 public:
-  Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
+  Screen(int H, int W, double pix_size, vector_t v_W, vector_t v_H,
          position_t screen_pos);
 
   ~Screen() {}

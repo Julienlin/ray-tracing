@@ -1,6 +1,6 @@
 #include "screen.hpp"
 
-Screen::Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
+Screen::Screen(int H, int W, double pix_size, vector_t v_W, vector_t v_H,
                position_t screen_pos)
     : m_H(H), m_W(W), m_pix_size(pix_size), m_v_H(v_H), m_v_W(v_W),
       m_screen_pos(screen_pos), m_pixels(m_H * m_W), m_pix_pos(m_H * m_W),
