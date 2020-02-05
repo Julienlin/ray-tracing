@@ -21,7 +21,7 @@ void RayCastingEngine::compute()
     vector_t direction = m_screen(i) - m_obs_pos;
     direction.normalize();
     // std::cout << " direction : " << direction << "\tm_obs_pos : " << m_obs_pos << "\tm_screen(" << i << "): " << m_screen(i) << std::endl;
-    m_rays[i] = Ray(m_screen(i), direction);
+    m_rays[i] = Ray(m_screen(i), direction, RGB_SILVER_GREY);
     m_screen.add_crossing_ray(i, m_rays[i]);
   }
 
