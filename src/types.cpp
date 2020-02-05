@@ -149,6 +149,14 @@ RGBColor RGBColor::operator+(const RGBColor &c) const
   return RGBColor(cap(m_red + c.m_red), cap(m_green + c.m_green), cap(m_blue + c.m_blue));
 }
 
+RGBColor &RGBColor::operator+=(const RGBColor &c)
+{
+  m_red += c.m_red;
+  m_green += c.m_green;
+  m_blue += c.m_blue;
+  return *this;
+}
+
 void swap(RGBColor &color1, RGBColor &color2) { color1.swap(color2); }
 
 unsigned char RGBColor::cap(unsigned c) const

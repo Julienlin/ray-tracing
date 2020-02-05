@@ -68,6 +68,7 @@ public:
   RGBColor &operator=(const RGBColor &);
   RGBColor operator*(const double &)const;
   RGBColor operator+(const RGBColor &) const;
+  RGBColor &operator+=(const RGBColor &);
 };
 
 void swap(RGBColor &, RGBColor &);
