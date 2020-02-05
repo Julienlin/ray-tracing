@@ -83,5 +83,6 @@ const RGBColor RGB_BLACK = RGBColor(0, 0, 0);
 const RGBColor RGB_RED = RGBColor(255, 0, 0);
 const RGBColor RGB_GREEN = RGBColor(0, 255, 0);
 const RGBColor RGB_BLUE = RGBColor(0, 0, 255);
+const RGBColor RGB_SILVER_GREY = RGBColor(192, 192, 192);
 
 #endif // __TYPES_H_
