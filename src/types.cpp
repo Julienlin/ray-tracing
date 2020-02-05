@@ -1,10 +1,10 @@
 #include "types.hpp"
 
-position_t position_t::operator+(const position_t &pos)
+position_t position_t::operator+(const position_t &pos) const
 {
   return position_t(x + pos.x, y + pos.y, z + pos.z);
 }
-position_t position_t::operator-(const position_t &pos)
+position_t position_t::operator-(const position_t &pos) const
 {
   return position_t(x - pos.x, y - pos.y, z - pos.z);
 }
@@ -39,17 +39,17 @@ position_t &position_t::operator*=(const double coef)
   return *this;
 }
 
-double position_t::operator*(const position_t pos)
+double position_t::operator*(const position_t pos) const
 {
   return x * pos.x + y * pos.y + z * pos.z;
 }
 
-position_t position_t::operator*(const double c)
+position_t position_t::operator*(const double c) const
 {
   return position_t(x * c, y * c, z * c);
 }
 
-position_t position_t::operator/(const double c)
+position_t position_t::operator/(const double c) const
 {
   return position_t(x / c, y / c, z / c);
 }
