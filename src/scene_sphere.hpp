@@ -18,7 +18,7 @@ private:
 public:
   SceneSphere() : m_center(POSITION_T_NULL), m_radius(0) {}
   SceneSphere(ObjectBaseSurface *surface, position_t center, double radius);
-  // TODO: implements the followings function for testing
+
   genRays_t generateRays(const Ray &incident_ray);
   /**
    * @brief Test whether the ray is intersecting the object.
