@@ -1,5 +1,17 @@
 #include "ray_engine.hpp"
 
+RayEngine::RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
+                     std::vector<LightSource> &sources, Screen &screen,
+                     position_t &observer_pos, int deepth)
+    : m_rays(rays), m_objects(objects), m_sources(sources), m_screen(screen),
+      m_obs_pos(observer_pos), m_deepth(deepth) {}
+
+RayEngine::RayEngine(std::vector<SceneBaseObject *> &objects,
+                     std::vector<LightSource> &sources, Screen &screen,
+                     position_t &obs_pos, int deepth)
+    : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
+      m_obs_pos(obs_pos), m_deepth(deepth) {}
+
 void RayCastingEngine::compute()
 {
   int nb_rays = m_rays.size();
