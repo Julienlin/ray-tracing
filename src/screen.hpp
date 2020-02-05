@@ -4,6 +4,7 @@
 #include "ray.hpp"
 #include "types.hpp"
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -30,6 +31,8 @@ private:
                 (i,j) (W,H) by [ j * m_W + i ] */
 
   std::vector<std::vector<Ray>> m_crossing_rays;
+
+  vector_t m_normal;
 
 public:
   Screen(int H, int W, double pix_size, vector_t v_H, vector_t v_W,
@@ -59,6 +62,10 @@ public:
   void add_crossing_ray(int i, Ray &ray);
 
   bool write(const std::string &);
+
+  bool is_intersecting(Ray &ray);
+
+  position_t intersect_pt(Ray &ray);
 };
 
 #endif // __SCREEN_H_
