@@ -1,5 +1,17 @@
 #include "ray_engine.hpp"
 
+RayEngine::RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
+                     std::vector<LightSource> &sources, Screen &screen,
+                     position_t &observer_pos, int deepth)
+    : m_rays(rays), m_objects(objects), m_sources(sources), m_screen(screen),
+      m_obs_pos(observer_pos), m_deepth(deepth) {}
+
+RayEngine::RayEngine(std::vector<SceneBaseObject *> &objects,
+                     std::vector<LightSource> &sources, Screen &screen,
+                     position_t &obs_pos, int deepth)
+    : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
+      m_obs_pos(obs_pos), m_deepth(deepth) {}
+
 void RayCastingEngine::compute()
 {
   int nb_rays = m_rays.size();
@@ -53,6 +65,8 @@ void RayCastingEngine::compute()
       vector_t V = m_obs_pos - pt_pos;
       V.normalize();
       double illumination = 0;
+      auto ray_color = m_rays[i].getColor();
+      auto new_color = RGB_BLACK;
 
       for (unsigned j = 0; j < nb_reachables_R; j++)
       {
@@ -71,11 +85,11 @@ void RayCastingEngine::compute()
         // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
         //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
 
-        illumination +=
-            k_d * (L * N) * i_d +
-            k_s * power<double>(RV, alpha) * i_s;
+        new_color +=
+            k_d * (L * N) * i_d * ray_color +
+            k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
       }
-      m_rays[i].setIntensity(illumination);
+      m_rays[i].setColor(new_color);
       // std::cout << "i : " << i << "\tillumination : " << illumination << std::endl;
     }
   }
@@ -83,7 +97,7 @@ void RayCastingEngine::compute()
   // Determine the color for each pixel
   for (unsigned i = 0; i < m_rays.size(); i++)
   {
-    m_screen[i] = m_rays[i].getIntensity() * m_rays[i].getColor();
+    m_screen[i] = m_rays[i].getColor();
   }
 }
 

@@ -5,7 +5,7 @@ int main()
 
   std::vector<SceneBaseObject *> objects;
   SurfaceUniformedColor surface(RGB_RED);
-  SceneSphere sphere(&surface, position_t(-50, 100, 0), 80);
+  SceneSphere sphere(&surface, position_t(0, 100, 0), 80);
   objects.push_back(&sphere);
 
   std::vector<LightSource> sources;

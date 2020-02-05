@@ -26,15 +26,11 @@ public:
   using source_vect_t = std::pair<LightSource *, vector_t>;
   RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &observer_pos, int deepth = 0)
-      : m_rays(rays), m_objects(objects), m_sources(sources), m_screen(screen),
-        m_obs_pos(observer_pos), m_deepth(deepth) {}
+            position_t &observer_pos, int deepth = 0);
 
   RayEngine(std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &obs_pos, int deepth = 0)
-      : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
-        m_obs_pos(obs_pos), m_deepth(deepth) {}
+            position_t &obs_pos, int deepth = 0);
   RayEngine(const RayEngine &engine) = default;
   RayEngine(RayEngine &&engine) = default;
   virtual ~RayEngine() {}

@@ -62,9 +62,13 @@ public:
   RGBColor(const RGBColor &color) = default;
   RGBColor(RGBColor &&color) = default;
   void swap(RGBColor &other);
+  friend std::ostream &operator<<(std::ostream &os, const RGBColor &color);
+
+  // Overriding operators
   RGBColor &operator=(const RGBColor &);
   RGBColor operator*(const double &)const;
-  friend std::ostream &operator<<(std::ostream &os, const RGBColor &color);
+  RGBColor operator+(const RGBColor &) const;
+  RGBColor &operator+=(const RGBColor &);
 };
 
 void swap(RGBColor &, RGBColor &);
