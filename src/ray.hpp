@@ -13,15 +13,10 @@ private:
   RGBColor m_color;
 
 public:
-  Ray()
-      : m_pos(POSITION_T_NULL), m_direction(POSITION_T_NULL),
-        m_color() {}
+  Ray();
   Ray(position_t pos, vector_t direction, RGBColor color,
-      Ray *fondamental = nullptr)
-      : m_pos(pos), m_direction(direction),
-        m_color(color) {}
-  Ray(position_t pos, vector_t direction)
-      : m_pos(pos), m_direction(direction), m_color() {}
+      Ray *fondamental = nullptr);
+  Ray(position_t pos, vector_t direction);
 
   position_t getPos() const { return m_pos; };
   vector_t getDirection() const { return m_direction; }
