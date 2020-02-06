@@ -41,6 +41,7 @@ public:
   ~Screen() {}
   int H() { return m_H; }
   int W() { return m_W; }
+
   /**
    * Get the color of the pixel i.
    *

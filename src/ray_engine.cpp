@@ -12,6 +12,14 @@ RayEngine::RayEngine(std::vector<SceneBaseObject *> &objects,
     : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
       m_obs_pos(obs_pos), m_deepth(deepth) {}
 
+RayCastingEngine::RayCastingEngine(std::vector<SceneBaseObject *> &objects,
+                                   std::vector<LightSource> &sources, Screen &screen,
+                                   position_t &observer_pos)
+    : RayEngine(objects, sources, screen, observer_pos)
+{
+  m_rays.resize(m_screen.H() * m_screen.W());
+}
+
 void RayCastingEngine::compute()
 {
   int nb_rays = m_rays.size();
@@ -21,18 +29,21 @@ void RayCastingEngine::compute()
     vector_t direction = m_screen(i) - m_obs_pos;
     direction.normalize();
     // std::cout << " direction : " << direction << "\tm_obs_pos : " << m_obs_pos << "\tm_screen(" << i << "): " << m_screen(i) << std::endl;
-    m_rays[i] = Ray(m_screen(i), direction);
+    m_rays[i] = Ray(m_screen(i), direction, RGB_SILVER_GREY);
     m_screen.add_crossing_ray(i, m_rays[i]);
   }
 
-  // Foreach ray check wether it hits something.
+  // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
   std::vector<obj_dist_t> distances;
-  distances.reserve(m_rays.size());
+  distances.reserve(nb_rays);
   for (int i = 0; i < distances.capacity(); i++)
   {
     auto ray = m_rays[i];
     distances[i] = get_intersection(ray);
-    // std::cout << "i : " << i << "\tintesection point : " << ray.getPos() + distances[i].second * ray.getDirection() << std::endl;
+    // if (distances[i].second != std::numeric_limits<double>::infinity())
+    // {
+    //   std::cout << "i : " << i << "\tintesection point : " << ray.getPos() + distances[i].second * ray.getDirection() << std::endl;
+    // }
   }
 
   int nb_intersec = 0;
@@ -42,6 +53,8 @@ void RayCastingEngine::compute()
     if (distances[i].second < std::numeric_limits<double>::infinity())
     {
       nb_intersec++;
+
+      // pt_pos is the position of the intersection.
       position_t pt_pos =
           m_rays[i].getPos() + distances[i].second * m_rays[i].getDirection();
       m_rays[i].setColor(distances[i].first->getSurface()->getColor(pt_pos));
@@ -49,48 +62,55 @@ void RayCastingEngine::compute()
       // determining all light sources reachable from this point
       std::vector<source_vect_t> reachables;
       get_reachable_sources(pt_pos, reachables);
-      // std ::cout << "size of reachables : " << reachables.size() << std::endl;
+      // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
 
       unsigned nb_reachables_R = reachables.size();
-      // Determining the the perfect reflected ray foreach sources
-      std::vector<Ray> R;
-      R.reserve(reachables.size());
-      for (unsigned j = 0; j < nb_reachables_R; j++)
+      // Determining the perfect reflected ray foreach sources
+      if (nb_reachables_R > 0)
       {
-        R[j] = make_reflect_ray(pt_pos, distances[i].first, reachables[j]);
-        // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
+        std::vector<Ray> R;
+        R.reserve(nb_reachables_R);
+        for (unsigned j = 0; j < nb_reachables_R; j++)
+        {
+          R[j] = make_reflect_ray(pt_pos, distances[i].first, reachables[j]);
+          // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
+        }
+
+        // Determining the illumination of the point / ray
+        vector_t V = m_obs_pos - pt_pos;
+        V.normalize();
+        auto ray_color = m_rays[i].getColor();
+        auto new_color = RGB_BLACK;
+
+        for (unsigned j = 0; j < nb_reachables_R; j++)
+        {
+          auto N = distances[i].first->getNormal(pt_pos);
+          // auto k_a = distances[i].first->get_amb_reflect();
+          auto L = reachables[j].second;
+          auto k_s = distances[i].first->get_spec_reflect();
+          auto k_d = distances[i].first->get_diff_reflect();
+          // double k_d = 300;
+          auto alpha = distances[i].first->get_shine();
+          // int alpha = 10;
+          auto i_d = reachables[j].first->get_diffusion();
+          auto i_s = reachables[j].first->get_intensity();
+          auto RV = R[j].getDirection() * V;
+          RV = RV > 0 ? RV : -RV;
+          auto LN = (L * N);
+          LN = LN > 0 ? LN : -LN;
+
+          // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
+          //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
+
+          new_color +=
+              k_d * LN * i_d * ray_color + k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
+        }
+        m_rays[i].setColor(new_color);
       }
-
-      // Determining the illumination of the point / ray
-      vector_t V = m_obs_pos - pt_pos;
-      V.normalize();
-      double illumination = 0;
-      auto ray_color = m_rays[i].getColor();
-      auto new_color = RGB_BLACK;
-
-      for (unsigned j = 0; j < nb_reachables_R; j++)
+      else
       {
-        auto N = distances[i].first->getNormal(pt_pos);
-        // auto k_a = distances[i].first->get_amb_reflect();
-        auto L = reachables[j].second;
-        auto k_s = distances[i].first->get_spec_reflect();
-        auto k_d = distances[i].first->get_diff_reflect();
-        // double k_d = 300;
-        auto alpha = distances[i].first->get_shine();
-        // int alpha = 10;
-        auto i_d = reachables[j].first->get_diffusion();
-        auto i_s = reachables[j].first->get_intensity();
-        auto RV = R[j].getDirection() * V;
-
-        // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
-        //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
-
-        new_color +=
-            k_d * (L * N) * i_d * ray_color +
-            k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
+        m_rays[i].setColor(RGB_BLACK);
       }
-      m_rays[i].setColor(new_color);
-      // std::cout << "i : " << i << "\tillumination : " << illumination << std::endl;
     }
   }
   // std::cout << "nb_intersec : " << nb_intersec << std::endl;
@@ -112,7 +132,7 @@ void RayCastingEngine::get_reachable_sources(
     direction.normalize();
     // std::cout << "direction pos to source : " << direction << std::endl;
     Ray ray(pos, direction);
-    auto obstacle = get_intersection(ray);
+    obj_dist_t obstacle = get_intersection(ray);
     if (obstacle.second == std::numeric_limits<double>::infinity())
     {
       source_vect_t new_el(&m_sources[i], direction);

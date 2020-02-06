@@ -4,25 +4,37 @@ int main()
 {
 
   std::vector<SceneBaseObject *> objects;
-  SurfaceUniformedColor surface(RGB_RED);
-  SceneSphere sphere(&surface, position_t(0, 100, 0), 80);
+  SurfaceUniformedColor surf_red(RGB_RED);
+  SceneSphere sphere(&surf_red, position_t(50, 90, -100), 25);
+  SurfaceUniformedColor surf_green(RGB_GREEN);
+  SceneSphere sphere2(&surf_green, position_t(100, 90, 0), 80);
   objects.push_back(&sphere);
+  objects.push_back(&sphere2);
 
   std::vector<LightSource> sources;
   // position_t src_pos(100, -10, -100);
   // LightSource source(src_pos, 1., 1.);
-  sources.push_back(LightSource(position_t(100, 0, 0), 10., 10.));
-  // sources.push_back(LightSource(position_t(-100, -10, 100), 1., 1.));
-  // sources.push_back(LightSource(position_t(0, 0, 100), 1., 1.));
-  position_t screen_pos(-15, 0, 15);
-  Screen screen(300, 300, 0.1, E1, -E3, screen_pos);
-  position_t observer_pos(0, -10, 0);
+  // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
+  // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
+  // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 0, 1000), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 10.));
+  double size_pix = 0.25;
+  int nb_pix = 1000;
+  int size_screen = nb_pix * size_pix, top_left = size_screen / 2;
+  // std::cout << "size of the screen : " << size_screen << "\ttop left : " << top_left << std::endl;
+  position_t screen_pos(-top_left, 0, top_left);
+  Screen screen(nb_pix, nb_pix, size_pix, E1, -E3, screen_pos);
+  position_t observer_pos(0, -1000, 0);
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
   RayEngine *engine = &casting_engine;
   engine->compute();
   engine->get_screen().write("test.tga");
 
-  auto screen_test = engine->get_screen();
+  Screen screen_test = engine->get_screen();
+
+  // std::cout << "screen_test.H() * screen_test.W() : " << screen_test.H() * screen_test.W() << std::endl;
+  // std::cout << "screen.H() * screen.W() : " << screen.H() * screen.W() << std::endl;
 
   // int damn = -1;
   // for (unsigned i = 0; i < screen.H() * screen.W(); i++)
@@ -34,5 +46,6 @@ int main()
   //   }
   // }
   // std::cout << "damn : " << damn << std::endl;
+
   return 0;
 }

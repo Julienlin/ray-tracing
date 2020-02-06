@@ -14,16 +14,12 @@ protected:
 
 public:
   SceneBaseObject() : m_surface(nullptr){};
-  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 1.,
-                  double diff_reflect = 1., double amb_reflect = 1.,
-                  double shine = 10.)
-      : m_surface(surface), m_spec_reflect(spec_reflect),
-        m_diff_reflect(diff_reflect), m_amb_reflect(amb_reflect),
-        m_shine(shine) {}
+  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 1., double diff_reflect = 1., double amb_reflect = 1., double shine = 10.);
   SceneBaseObject(const SceneBaseObject &obj) = default;
   SceneBaseObject(SceneBaseObject &&obj) = default;
   virtual ~SceneBaseObject(){};
   virtual double intersecDist(const Ray &ray) = 0;
+
   /**
    * Generate a set of rays for implementation of several physic phenomenon.
    * This function calls several other virtual functions for the generation of
@@ -46,7 +42,7 @@ public:
    */
   virtual vector_t getNormal(const position_t &pos) = 0;
 
-  ObjectBaseSurface *getSurface() { return m_surface; }
+  ObjectBaseSurface *getSurface();
   double get_spec_reflect() { return m_spec_reflect; }
   double get_diff_reflect() { return m_diff_reflect; }
   double get_amb_reflect() { return m_amb_reflect; }

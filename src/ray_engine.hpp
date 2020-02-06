@@ -43,11 +43,7 @@ class RayCastingEngine : public RayEngine
 public:
   RayCastingEngine(std::vector<SceneBaseObject *> &objects,
                    std::vector<LightSource> &sources, Screen &screen,
-                   position_t &observer_pos)
-      : RayEngine(objects, sources, screen, observer_pos)
-  {
-    m_rays.resize(m_screen.H() * m_screen.W());
-  }
+                   position_t &observer_pos);
   RayCastingEngine(const RayCastingEngine &engine) = default;
   RayCastingEngine(RayCastingEngine &&engine) = default;
   void compute();

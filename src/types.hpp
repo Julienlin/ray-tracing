@@ -15,11 +15,11 @@ public:
   position_t(const position_t &pos) = default;
   position_t(position_t &&pos) = default;
 
-  position_t operator/(const double c);
-  double operator*(const position_t pos);
-  position_t operator*(const double c);
-  position_t operator+(const position_t &pos);
-  position_t operator-(const position_t &pos);
+  position_t operator/(const double c) const;
+  double operator*(const position_t pos) const;
+  position_t operator*(const double c) const;
+  position_t operator+(const position_t &pos) const;
+  position_t operator-(const position_t &pos) const;
   position_t &operator=(const position_t &pos);
   position_t &operator+=(const position_t &pos);
   position_t &operator-=(const position_t &pos);
