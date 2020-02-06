@@ -151,9 +151,9 @@ RGBColor RGBColor::operator+(const RGBColor &c) const
 
 RGBColor &RGBColor::operator+=(const RGBColor &c)
 {
-  m_red += c.m_red;
-  m_green += c.m_green;
-  m_blue += c.m_blue;
+  m_red = cap(m_red + c.m_red);
+  m_green = cap(m_green + c.m_green);
+  m_blue = cap(m_blue + c.m_blue);
   return *this;
 }
 
