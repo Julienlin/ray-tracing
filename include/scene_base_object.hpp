@@ -21,19 +21,6 @@ public:
   virtual double intersecDist(const Ray &ray) = 0;
 
   /**
-   * Generate a set of rays for implementation of several physic phenomenon.
-   * This function calls several other virtual functions for the generation of
-   * rays.
-   *
-   * @param incident_ray the incident ray.
-   *
-   * @return set of generated rays
-   */
-  virtual genRays_t generateRays(const Ray &incident_ray) = 0;
-  virtual Ray generateReflectionRay(const Ray &incident) = 0;
-  virtual Ray generateRefractionRay(const Ray &incident) = 0;
-
-  /**
    * @brief get the normal to the surface passing by POS.
    *
    * @param pos
