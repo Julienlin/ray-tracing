@@ -1,24 +1,34 @@
-#include "main.hpp"
+#include <main.hpp>
 
 int main()
 {
 
+  // create color multi threaded logger
+  auto console = spdlog::stdout_color_mt("console");
+  auto err_logger = spdlog::stderr_color_mt("stderr");
+  spdlog::get("console")->info("Starting the ray Tracing !");
+
+  spdlog::get("console")->info("Creating objects...");
   std::vector<SceneBaseObject *> objects;
   SurfaceUniformedColor surf_red(RGB_RED);
   SceneSphere sphere(&surf_red, position_t(50, 90, -100), 25);
   SurfaceUniformedColor surf_green(RGB_GREEN);
+  SurfaceUniformedColor surf_blue(RGB_BLUE);
   SceneSphere sphere2(&surf_green, position_t(100, 90, 0), 80);
+  SceneSphere sphere3(&surf_blue, position_t(-100, 90, 0), 60);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
+  objects.push_back(&sphere3);
 
+  spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
   // position_t src_pos(100, -10, -100);
   // LightSource source(src_pos, 1., 1.);
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, 1000), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 0, 100), 10., 10.));
+  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 10.));
   double size_pix = 0.25;
   int nb_pix = 1000;
   int size_screen = nb_pix * size_pix, top_left = size_screen / 2;
@@ -28,8 +38,13 @@ int main()
   position_t observer_pos(0, -1000, 0);
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
   RayEngine *engine = &casting_engine;
+
+  spdlog::get("console")->info("Computing...");
   engine->compute();
+
+  spdlog::get("console")->info("Writing image...");
   engine->get_screen().write("test.tga");
+  spdlog::get("console")->info("Done...");
 
   Screen screen_test = engine->get_screen();
 
