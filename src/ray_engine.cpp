@@ -1,4 +1,4 @@
-#include "ray_engine.hpp"
+#include <ray_engine.hpp>
 
 RayEngine::RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
                      std::vector<LightSource> &sources, Screen &screen,

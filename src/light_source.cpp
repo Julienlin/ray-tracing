@@ -1,4 +1,4 @@
-#include "light_source.hpp"
+#include <light_source.hpp>
 
 LightSource::LightSource(position_t &pos, double &intensity, double &diffusion)
     : m_pos(pos), m_intensity(intensity), m_diffusion(diffusion) {}
