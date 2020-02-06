@@ -29,14 +29,16 @@ void RayCastingEngine::compute()
     vector_t direction = m_screen(i) - m_obs_pos;
     direction.normalize();
     // std::cout << " direction : " << direction << "\tm_obs_pos : " << m_obs_pos << "\tm_screen(" << i << "): " << m_screen(i) << std::endl;
-    m_rays[i] = Ray(m_screen(i), direction, RGB_SILVER_GREY);
+    m_rays[i] = Ray(m_screen(i), direction, RGB_BLACK);
     m_screen.add_crossing_ray(i, m_rays[i]);
   }
+
+  spdlog::get("console")->info("Computing...");
 
   // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
   std::vector<obj_dist_t> distances;
   distances.reserve(nb_rays);
-  for (int i = 0; i < distances.capacity(); i++)
+  for (unsigned i = 0; i < distances.capacity(); i++)
   {
     auto ray = m_rays[i];
     distances[i] = get_intersection(ray);
@@ -47,7 +49,7 @@ void RayCastingEngine::compute()
   }
 
   int nb_intersec = 0;
-  for (unsigned i = 0; i < nb_rays; i++)
+  for (int i = 0; i < nb_rays; i++)
   {
     // Determing the color of rays
     if (distances[i].second < std::numeric_limits<double>::infinity())
@@ -72,7 +74,7 @@ void RayCastingEngine::compute()
         R.reserve(nb_reachables_R);
         for (unsigned j = 0; j < nb_reachables_R; j++)
         {
-          R[j] = make_reflect_ray(pt_pos, distances[i].first, reachables[j]);
+          R[j] = generate_reflection_ray(pt_pos, distances[i].first, reachables[j]);
           // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
         }
 
@@ -119,6 +121,8 @@ void RayCastingEngine::compute()
   {
     m_screen[i] = m_rays[i].getColor();
   }
+
+  spdlog::get("console")->info("Computing done!");
 }
 
 void RayCastingEngine::get_reachable_sources(
@@ -156,9 +160,9 @@ RayCastingEngine::obj_dist_t RayCastingEngine::get_intersection(Ray &ray)
   return obstacle;
 }
 
-Ray RayCastingEngine::make_reflect_ray(const position_t &pos,
-                                       SceneBaseObject *obj,
-                                       source_vect_t &source)
+Ray RayCastingEngine::generate_reflection_ray(const position_t &pos,
+                                              SceneBaseObject *obj,
+                                              source_vect_t &source)
 {
   auto normal = obj->getNormal(pos);
   auto L = source.second;

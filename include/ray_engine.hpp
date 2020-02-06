@@ -51,7 +51,7 @@ public:
   void compute();
   obj_dist_t get_intersection(Ray &);
   void get_reachable_sources(position_t, std::vector<source_vect_t> &);
-  Ray make_reflect_ray(const position_t &, SceneBaseObject *, source_vect_t &);
+  Ray generate_reflection_ray(const position_t &, SceneBaseObject *, source_vect_t &);
 };
 
 #endif // __RAY_CASTING_H_
