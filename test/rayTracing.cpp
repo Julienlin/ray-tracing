@@ -1,6 +1,6 @@
-#include <main.hpp>
+#include "rayTracing.hpp"
 
-int main()
+int main(int argc, char const *argv[])
 {
 
   // create color multi threaded logger
@@ -11,14 +11,15 @@ int main()
   spdlog::get("console")->info("Creating objects...");
   std::vector<SceneBaseObject *> objects;
   SurfaceUniformedColor surf_red(RGB_RED);
-  SceneSphere sphere(&surf_red, position_t(50, 90, -100), 25);
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
+  SceneSphere sphere(&surf_red, position_t(50, 90, -100), 25);
   SceneSphere sphere2(&surf_green, position_t(100, 90, 0), 80);
-  SceneSphere sphere3(&surf_blue, position_t(-100, 90, 0), 60);
+  // SceneSphere sphere3(&surf_blue, position_t(-100, 90, 0), 60);
+  // SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
-  objects.push_back(&sphere3);
+  // objects.push_back(&sphere3);
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
@@ -29,6 +30,7 @@ int main()
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
   sources.push_back(LightSource(position_t(0, 0, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 10.));
+
   double size_pix = 0.25;
   int nb_pix = 1000;
   int size_screen = nb_pix * size_pix, top_left = size_screen / 2;
@@ -43,7 +45,15 @@ int main()
   engine->compute();
 
   spdlog::get("console")->info("Writing image...");
-  engine->get_screen().write("test.tga");
+
+  std::string filename("test.tga");
+  if (argc > 1)
+  {
+    filename = std::string(argv[1]);
+  }
+
+  engine->get_screen().write(filename);
+
   spdlog::get("console")->info("Done...");
 
   Screen screen_test = engine->get_screen();
