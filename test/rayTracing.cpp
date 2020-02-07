@@ -13,13 +13,14 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_red(RGB_RED);
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
-  SceneSphere sphere(&surf_red, position_t(50, 90, -100), 25);
-  SceneSphere sphere2(&surf_green, position_t(100, 90, 0), 80);
-  // SceneSphere sphere3(&surf_blue, position_t(-100, 90, 0), 60);
-  // SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
+  SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
+  SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
+  SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
+  SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
-  // objects.push_back(&sphere3);
+  objects.push_back(&sphere3);
+  objects.push_back(&sphere4);
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
@@ -28,8 +29,8 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, 100), 10., 10.));
-  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
 
   double size_pix = 0.25;
   int nb_pix = 1000;
@@ -41,7 +42,6 @@ int main(int argc, char const *argv[])
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
   RayEngine *engine = &casting_engine;
 
-  spdlog::get("console")->info("Computing...");
   engine->compute();
 
   spdlog::get("console")->info("Writing image...");
@@ -54,7 +54,11 @@ int main(int argc, char const *argv[])
 
   engine->get_screen().write(filename);
 
-  spdlog::get("console")->info("Done...");
+  std::stringstream ss;
+
+  ss << "Wrinting image in " << filename << " done!" << std::ends;
+
+  spdlog::get("console")->info(ss.str());
 
   Screen screen_test = engine->get_screen();
 
