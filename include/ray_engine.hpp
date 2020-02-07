@@ -10,6 +10,7 @@
 #include <limits>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
+#include <sstream>
 #include <vector>
 
 class RayEngine
