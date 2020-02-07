@@ -52,7 +52,8 @@ void RayCastingEngine::compute()
   for (int i = 0; i < nb_rays; i++)
   {
     // Determing the color of rays
-    if (distances[i].second < std::numeric_limits<double>::infinity())
+    // testing if > 0 in the case of when the image is split by a plan  some ray can be on the plane so we don't want to compute the color first.
+    if (distances[i].second < std::numeric_limits<double>::infinity() && distances[i].second > 0)
     {
       nb_intersec++;
 
@@ -97,9 +98,9 @@ void RayCastingEngine::compute()
           auto i_d = reachables[j].first->get_diffusion();
           auto i_s = reachables[j].first->get_intensity();
           auto RV = R[j].getDirection() * V;
-          RV = RV > 0 ? RV : -RV;
+          // RV = RV > 0 ? RV : -RV;
           auto LN = (L * N);
-          LN = LN > 0 ? LN : -LN;
+          // LN = LN > 0 ? LN : -LN;
 
           // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
           //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
@@ -115,7 +116,10 @@ void RayCastingEngine::compute()
       }
     }
   }
-  // std::cout << "nb_intersec : " << nb_intersec << std::endl;
+  std::stringstream ss;
+  ss << "nb_intersec : " << nb_intersec << std::ends;
+  spdlog::info(ss.str());
+
   // Determine the color for each pixel
   for (unsigned i = 0; i < m_rays.size(); i++)
   {
@@ -152,7 +156,7 @@ RayCastingEngine::obj_dist_t RayCastingEngine::get_intersection(Ray &ray)
   {
     obj_dist_t new_dist(obj, obj->intersecDist(ray));
     // std::cout << "Ray pos : " << ray.getPos() << "\tdist : " << new_dist.second << std::endl;
-    if (new_dist.second > 0 && new_dist.second < obstacle.second)
+    if (new_dist.second >= 0 && new_dist.second < obstacle.second)
     {
       obstacle.swap(new_dist);
     }
