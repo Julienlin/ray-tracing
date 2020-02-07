@@ -156,6 +156,7 @@ RayCastingEngine::obj_dist_t RayCastingEngine::get_intersection(Ray &ray)
   {
     obj_dist_t new_dist(obj, obj->intersecDist(ray));
     // std::cout << "Ray pos : " << ray.getPos() << "\tdist : " << new_dist.second << std::endl;
+    // if (new_dist.second >= 0 && new_dist.second < obstacle.second && new_dist.first->getNormal(ray.getPos()) * ray.getDirection() < 0)
     if (new_dist.second >= 0 && new_dist.second < obstacle.second)
     {
       obstacle.swap(new_dist);
