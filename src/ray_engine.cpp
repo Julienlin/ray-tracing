@@ -65,6 +65,7 @@ void RayCastingEngine::compute()
       // determining all light sources reachable from this point
       std::vector<source_vect_t> reachables;
       get_reachable_sources(pt_pos, reachables);
+      // get_reachable_sources(m_rays[i], distances[i], reachables);
       // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
 
       unsigned nb_reachables_R = reachables.size();
@@ -76,8 +77,12 @@ void RayCastingEngine::compute()
         for (unsigned j = 0; j < nb_reachables_R; j++)
         {
           R[j] = generate_reflection_ray(pt_pos, distances[i].first, reachables[j]);
+          // R[j] = generate_reflection_ray(m_rays[i], distances[i], reachables[j]);
           // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
         }
+
+        position_t pt_pos =
+            m_rays[i].getPos() + distances[i].second * m_rays[i].getDirection();
 
         // Determining the illumination of the point / ray
         vector_t V = m_obs_pos - pt_pos;
@@ -105,8 +110,11 @@ void RayCastingEngine::compute()
           // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
           //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
 
-          new_color +=
-              k_d * LN * i_d * ray_color + k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
+          new_color += k_d * LN * i_d * ray_color;
+          if (RV > 0)
+          {
+            new_color += k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
+          }
         }
         m_rays[i].setColor(new_color);
       }
