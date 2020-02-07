@@ -14,7 +14,7 @@ protected:
 
 public:
   SceneBaseObject() : m_surface(nullptr){};
-  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 1., double diff_reflect = 1., double amb_reflect = 1., double shine = 10.);
+  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 0.5, double diff_reflect = 0.5, double amb_reflect = 1., double shine = 100.);
   SceneBaseObject(const SceneBaseObject &obj) = default;
   SceneBaseObject(SceneBaseObject &&obj) = default;
   virtual ~SceneBaseObject(){};
