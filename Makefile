@@ -6,7 +6,9 @@
 
 SRCDIR= src
 BUILDDIR= build
-TARGET = bin/rayTracing
+AIM=plane
+TARGET = bin/$(AIM)
+TARGETCPP = test/$(AIM).cpp
 SRCEXT = cpp
 
 CXX = g++
@@ -27,7 +29,7 @@ MKDIR_P = mkdir -p
 # 	rm -f $(EXEC)
 
 
-$(TARGET): $(OBJECTS) test/rayTracing.cpp
+$(TARGET): $(OBJECTS) $(TARGETCPP)
 	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(TARGET) $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
