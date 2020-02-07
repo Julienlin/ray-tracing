@@ -13,6 +13,7 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_red(RGB_RED);
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
+  SurfaceUniformedColor surf_yellow(RGB_RED + RGB_GREEN);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
@@ -29,8 +30,10 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  // sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
+  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  position_t observer_pos(0, -1000, 0);
+  sources.push_back(LightSource(observer_pos, 1., 2.));
 
   double size_pix = 0.25;
   int nb_pix = 1000;
@@ -38,7 +41,6 @@ int main(int argc, char const *argv[])
   // std::cout << "size of the screen : " << size_screen << "\ttop left : " << top_left << std::endl;
   position_t screen_pos(-top_left, 0, top_left);
   Screen screen(nb_pix, nb_pix, size_pix, E1, -E3, screen_pos);
-  position_t observer_pos(0, -1000, 0);
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
   RayEngine *engine = &casting_engine;
 
