@@ -99,7 +99,7 @@ void RayCastingEngine::compute()
         R.reserve(nb_reachables_R);
         for (unsigned j = 0; j < nb_reachables_R; j++)
         {
-          R[j] = generate_reflection_ray(pt_pos, std::get<1>(dist), reachables[j]);
+          R[j] = generate_reflection_ray(dist, reachables[j]);
           // R[j] = generate_reflection_ray(m_rays[i], distances[i], reachables[j]);
           // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
         }
@@ -203,13 +203,27 @@ RayCastingEngine::ray_obj_dist_t RayCastingEngine::get_intersection(Ray *ray)
   return obstacle;
 }
 
-Ray RayCastingEngine::generate_reflection_ray(
-    const position_t &pos, SceneBaseObject *obj, source_vect_t &source)
+// Ray RayCastingEngine::generate_reflection_ray(
+//     const position_t &pos, SceneBaseObject *obj, source_vect_t &source)
+// {
+//   auto normal = obj->getNormal(pos);
+//   auto L = source.second;
+//   auto x = L * normal;
+//   auto direction = 2 * x * normal - L;
+//   direction.normalize();
+//   return Ray(pos, direction);
+// }
+
+Ray RayCastingEngine::generate_reflection_ray(ray_obj_dist_t &dist, source_vect_t &source)
 {
-  auto normal = obj->getNormal(pos);
+  Ray *ray = std::get<0>(dist);
+  double t = std::get<2>(dist);
+  position_t pos = ray->getPos() + t * ray->getDirection();
+  auto normal = std::get<1>(dist)->getNormal(pos);
   auto L = source.second;
   auto x = L * normal;
   auto direction = 2 * x * normal - L;
   direction.normalize();
-  return Ray(pos, direction);
+  Ray new_ray(pos, direction, std::get<1>(dist)->getSurface()->getColor(pos), ray->get_fundamental());
+  return new_ray;
 }
