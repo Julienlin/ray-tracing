@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
   // std::cout << "size of the screen : " << size_screen << "\ttop left : " << top_left << std::endl;
   position_t screen_pos(-top_left, 0, top_left);
   Screen screen(nb_pix, nb_pix, size_pix, E1, -E3, screen_pos);
-  RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
+  RayCastingEngine casting_engine(objects, sources, screen, observer_pos, RGB_BLUE + RGB_GREEN, 1.);
   RayEngine *engine = &casting_engine;
 
   engine->compute();

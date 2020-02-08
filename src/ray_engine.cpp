@@ -2,20 +2,20 @@
 
 RayEngine::RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
                      std::vector<LightSource> &sources, Screen &screen,
-                     position_t &observer_pos, RGBColor background_color, int deepth)
+                     position_t &observer_pos, RGBColor background_color, double amb_lighting, int deepth)
     : m_rays(rays), m_objects(objects), m_sources(sources), m_screen(screen),
-      m_obs_pos(observer_pos), m_background_color(background_color), m_deepth(deepth) {}
+      m_obs_pos(observer_pos), m_background_color(background_color), m_amb_lighting(amb_lighting), m_deepth(deepth) {}
 
 RayEngine::RayEngine(std::vector<SceneBaseObject *> &objects,
                      std::vector<LightSource> &sources, Screen &screen,
-                     position_t &obs_pos, RGBColor background_color, int deepth)
+                     position_t &obs_pos, RGBColor background_color, double amb_lighting, int deepth)
     : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
-      m_obs_pos(obs_pos), m_background_color(background_color), m_deepth(deepth) {}
+      m_obs_pos(obs_pos), m_background_color(background_color), m_amb_lighting(amb_lighting), m_deepth(deepth) {}
 
 RayCastingEngine::RayCastingEngine(std::vector<SceneBaseObject *> &objects,
                                    std::vector<LightSource> &sources, Screen &screen,
-                                   position_t &observer_pos)
-    : RayEngine(objects, sources, screen, observer_pos)
+                                   position_t &observer_pos, RGBColor background_color, double amb_lighting)
+    : RayEngine(objects, sources, screen, observer_pos, background_color, amb_lighting)
 {
   m_rays.resize(m_screen.H() * m_screen.W());
 }
@@ -102,19 +102,14 @@ void RayCastingEngine::compute()
         for (unsigned j = 0; j < nb_reachables_R; j++)
         {
           auto N = distances[i].first->getNormal(pt_pos);
-          // auto k_a = distances[i].first->get_amb_reflect();
           auto L = reachables[j].second;
           auto k_s = distances[i].first->get_spec_reflect();
           auto k_d = distances[i].first->get_diff_reflect();
-          // double k_d = 300;
           auto alpha = distances[i].first->get_shine();
-          // int alpha = 10;
           auto i_d = reachables[j].first->get_diffusion();
           auto i_s = reachables[j].first->get_intensity();
           auto RV = R[j].getDirection() * V;
-          // RV = RV > 0 ? RV : -RV;
           auto LN = (L * N);
-          // LN = LN > 0 ? LN : -LN;
 
           // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
           //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
@@ -126,6 +121,8 @@ void RayCastingEngine::compute()
             new_color += k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
           }
         }
+        auto k_a = distances[i].first->get_amb_reflect();
+        new_color += m_amb_lighting * k_a * new_color;
         m_rays[i].setColor(new_color);
       }
       else

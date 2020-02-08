@@ -22,6 +22,7 @@ protected:
   Screen m_screen;
   position_t m_obs_pos;
   RGBColor m_background_color;
+  double m_amb_lighting;
   int m_deepth;
   static constexpr double MAX_HORIZON = 1e18;
 
@@ -31,11 +32,12 @@ public:
   using source_vect_t = std::pair<LightSource *, vector_t>;
   RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &observer_pos, RGBColor background_color, int deepth = 0);
+            position_t &observer_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 0, int deepth = 0);
 
   RayEngine(std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &obs_pos, RGBColor background_color = RGB_BLACK, int deepth = 0);
+            position_t &obs_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 0, int deepth = 0);
+
   RayEngine(const RayEngine &engine) = default;
   RayEngine(RayEngine &&engine) = default;
   virtual ~RayEngine() {}
@@ -48,7 +50,7 @@ class RayCastingEngine : public RayEngine
 public:
   RayCastingEngine(std::vector<SceneBaseObject *> &objects,
                    std::vector<LightSource> &sources, Screen &screen,
-                   position_t &observer_pos);
+                   position_t &observer_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 0);
   RayCastingEngine(const RayCastingEngine &engine) = default;
   RayCastingEngine(RayCastingEngine &&engine) = default;
   void compute();
