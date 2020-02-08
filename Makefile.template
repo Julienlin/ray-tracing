@@ -10,6 +10,7 @@ AIM=rayTracing
 TARGET = bin/$(AIM)
 TARGETCPP = test/$(AIM).cpp
 SRCEXT = cpp
+BINDIR=bin
 
 CXX = g++
 CXXFLAGS = --std=c++11 -g -Wall -fdiagnostics-color=always
@@ -28,20 +29,25 @@ MKDIR_P = mkdir -p
 # 	rm -f $(SOURCES)
 # 	rm -f $(EXEC)
 
-
-$(TARGET): $(OBJECTS) $(TARGETCPP)
-	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(TARGET) $(LIB)
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	# @echo "$(SOURCES)"
   	#  mkdir -p $(BUILDDIR)
 	$(shell mkdir -p $(BUILDDIR))
 	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $<
 
-rayTracing : $(BUILDDIR)/%.o test/rayTracing.cpp
-	$(CXX) $(CXXFLAGS) $(INC) -o $@ $^
+$(TARGET): $(OBJECTS) $(TARGETCPP)
+	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(TARGET) $(LIB)
+
+plane: $(OBJECTS) test/plane.cpp
+	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(BINDIR)/$@ $(LIB)
+
+just_plane : $(BUILDDIR)/%.o test/just_plane.cpp
+	$(CXX) $(CXXFLAGS) $(INC) -o $(BINDIR)/$@ $^
+
+rayTracing: $(OBJECTS) test/rayTracing.cpp
+	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(BINDIR)/$@ $(LIB)
 
 clean:
-	rm -rf $(BUILDDIR) $(TARGET)
+	rm -rf $(BUILDDIR) $(TARGET) bin/*
 
 # end
