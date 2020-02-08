@@ -14,9 +14,9 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_RED + RGB_GREEN);
-  SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
-  SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
-  SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
+  SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25, 0, 1, 0.);
+  SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80, 1, 0, 0);
+  SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60, 0, 0, 1);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
