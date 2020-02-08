@@ -17,7 +17,7 @@ private:
 
 public:
   SceneSphere() : m_center(POSITION_T_NULL), m_radius(0) {}
-  SceneSphere(ObjectBaseSurface *surface, position_t center, double radius);
+  SceneSphere(ObjectBaseSurface *surface, position_t center, double radius, double spec_reflect = 0.5, double diff_reflect = 0.5, double amb_reflect = 0.5, double shine = 10.);
 
   /**
    * @brief Test whether the ray is intersecting the object.

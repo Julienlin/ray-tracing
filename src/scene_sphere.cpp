@@ -1,7 +1,7 @@
 #include "scene_sphere.hpp"
 
-SceneSphere::SceneSphere(ObjectBaseSurface *surface, position_t center, double radius)
-    : SceneBaseObject(surface), m_center(center), m_radius(radius) {}
+SceneSphere::SceneSphere(ObjectBaseSurface *surface, position_t center, double radius, double spec_reflect, double diff_reflect, double amb_reflect, double shine)
+    : SceneBaseObject(surface, spec_reflect, diff_reflect, amb_reflect, shine), m_center(center), m_radius(radius) {}
 
 double SceneSphere::intersecDist(const Ray &ray)
 {
