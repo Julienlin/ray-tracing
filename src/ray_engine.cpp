@@ -2,15 +2,15 @@
 
 RayEngine::RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
                      std::vector<LightSource> &sources, Screen &screen,
-                     position_t &observer_pos, int deepth)
+                     position_t &observer_pos, RGBColor background_color, int deepth)
     : m_rays(rays), m_objects(objects), m_sources(sources), m_screen(screen),
-      m_obs_pos(observer_pos), m_deepth(deepth) {}
+      m_obs_pos(observer_pos), m_background_color(background_color), m_deepth(deepth) {}
 
 RayEngine::RayEngine(std::vector<SceneBaseObject *> &objects,
                      std::vector<LightSource> &sources, Screen &screen,
-                     position_t &obs_pos, int deepth)
+                     position_t &obs_pos, RGBColor background_color, int deepth)
     : m_rays(), m_objects(objects), m_sources(sources), m_screen(screen),
-      m_obs_pos(obs_pos), m_deepth(deepth) {}
+      m_obs_pos(obs_pos), m_background_color(background_color), m_deepth(deepth) {}
 
 RayCastingEngine::RayCastingEngine(std::vector<SceneBaseObject *> &objects,
                                    std::vector<LightSource> &sources, Screen &screen,
@@ -29,7 +29,7 @@ void RayCastingEngine::compute()
     vector_t direction = m_screen(i) - m_obs_pos;
     direction.normalize();
     // std::cout << " direction : " << direction << "\tm_obs_pos : " << m_obs_pos << "\tm_screen(" << i << "): " << m_screen(i) << std::endl;
-    m_rays[i] = Ray(m_screen(i), direction, RGB_GREEN + RGB_RED);
+    m_rays[i] = Ray(m_screen(i), direction, m_background_color);
     m_screen.add_crossing_ray(i, m_rays[i]);
   }
 
