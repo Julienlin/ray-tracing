@@ -24,7 +24,7 @@ public:
   /**
    * @brief get the normal to the surface passing by POS.
    *
-   * @param pos
+   * @param pos is Either the position of the intersection or the position to where the normal has to go trhough.
    *
    * @return the normal to the surface passing by POS.
    */
