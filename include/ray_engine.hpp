@@ -32,11 +32,11 @@ public:
   using source_vect_t = std::pair<LightSource *, vector_t>;
   RayEngine(std::vector<Ray> &rays, std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &observer_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 0, int deepth = 0);
+            position_t &observer_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 1, int deepth = 0);
 
   RayEngine(std::vector<SceneBaseObject *> &objects,
             std::vector<LightSource> &sources, Screen &screen,
-            position_t &obs_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 0, int deepth = 0);
+            position_t &obs_pos, RGBColor background_color = RGB_BLACK, double amb_lighting = 1, int deepth = 0);
 
   RayEngine(const RayEngine &engine) = default;
   RayEngine(RayEngine &&engine) = default;
