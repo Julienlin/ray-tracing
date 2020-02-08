@@ -29,11 +29,11 @@ void RayCastingEngine::compute()
     vector_t direction = m_screen(i) - m_obs_pos;
     direction.normalize();
     // std::cout << " direction : " << direction << "\tm_obs_pos : " << m_obs_pos << "\tm_screen(" << i << "): " << m_screen(i) << std::endl;
-    m_rays[i] = Ray(m_screen(i), direction, RGB_BLACK);
+    m_rays[i] = Ray(m_screen(i), direction, RGB_GREEN + RGB_RED);
     m_screen.add_crossing_ray(i, m_rays[i]);
   }
 
-  spdlog::get("console")->info("Computing...");
+  spdlog::get("console")->info("Computing Ray Casting Engine...");
 
   // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
   std::vector<obj_dist_t> distances;
@@ -42,10 +42,18 @@ void RayCastingEngine::compute()
   {
     auto ray = m_rays[i];
     distances[i] = get_intersection(ray);
-    // if (distances[i].second != std::numeric_limits<double>::infinity())
-    // {
-    //   std::cout << "i : " << i << "\tintesection point : " << ray.getPos() + distances[i].second * ray.getDirection() << std::endl;
-    // }
+    if (distances[i].second > MAX_HORIZON)
+    {
+      distances[i].second = std::numeric_limits<double>::infinity();
+    }
+
+    if (distances[i].second != std::numeric_limits<double>::infinity())
+    {
+      // std::cout << "i : " << i << "\tintesection point : " << ray.getPos() + distances[i].second * ray.getDirection() << std::endl;
+      std::stringstream ss;
+      ss << "i : " << i << "\tintesection point t : " << distances[i].second;
+      spdlog::debug(ss.str());
+    }
   }
 
   int nb_intersec = 0;
@@ -64,12 +72,13 @@ void RayCastingEngine::compute()
 
       // determining all light sources reachable from this point
       std::vector<source_vect_t> reachables;
-      get_reachable_sources(pt_pos, reachables);
+      get_reachable_sources(m_rays[i], distances[i].first, pt_pos, reachables);
       // get_reachable_sources(m_rays[i], distances[i], reachables);
       // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
 
       unsigned nb_reachables_R = reachables.size();
       // Determining the perfect reflected ray foreach sources
+
       if (nb_reachables_R > 0)
       {
         std::vector<Ray> R;
@@ -111,6 +120,7 @@ void RayCastingEngine::compute()
           //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
 
           new_color += k_d * LN * i_d * ray_color;
+
           if (RV > 0)
           {
             new_color += k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
@@ -125,8 +135,7 @@ void RayCastingEngine::compute()
     }
   }
   std::stringstream ss;
-  ss << "nb_intersec : " << nb_intersec << std::ends;
-  spdlog::info(ss.str());
+  spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
 
   // Determine the color for each pixel
   for (unsigned i = 0; i < m_rays.size(); i++)
@@ -138,9 +147,11 @@ void RayCastingEngine::compute()
 }
 
 void RayCastingEngine::get_reachable_sources(
+    Ray &ray_incident, SceneBaseObject *obj,
     position_t pos, std::vector<source_vect_t> &reachables)
 {
   reachables.clear();
+  vector_t normal = obj->getNormal(pos);
   // foreach source see that they
   for (unsigned i = 0; i < m_sources.size(); i++)
   {
@@ -149,10 +160,17 @@ void RayCastingEngine::get_reachable_sources(
     // std::cout << "direction pos to source : " << direction << std::endl;
     Ray ray(pos, direction);
     obj_dist_t obstacle = get_intersection(ray);
+    position_t buf(-116.75, 0, 124.75);
+    std::stringstream ss;
+    // ss << "ray_incident.getDirection() : " << ray_incident.getDirection() << "\t normal : " << normal << "\tpos to source" << m_sources[i].get_pos() - pos << "\tpos : " << pos << "\t(ray_incident.getDirection() * normal) * (normal * (-direction)) : " << (ray_incident.getDirection() * normal) * (normal * (-direction)) << "\t(ray_incident.getDirection() * normal) * (normal * (-direction)) > 0 : " << ((ray_incident.getDirection() * normal) * (normal * (-direction)) > 0) << "\tobstacle.second : " << obstacle.second;
+
     if (obstacle.second == std::numeric_limits<double>::infinity())
     {
-      source_vect_t new_el(&m_sources[i], direction);
-      reachables.push_back(new_el);
+      if ((ray_incident.getDirection() * normal) * (normal * (-direction)) > 0)
+      {
+        source_vect_t new_el(&m_sources[i], direction);
+        reachables.push_back(new_el);
+      }
     }
   }
 }
@@ -173,9 +191,8 @@ RayCastingEngine::obj_dist_t RayCastingEngine::get_intersection(Ray &ray)
   return obstacle;
 }
 
-Ray RayCastingEngine::generate_reflection_ray(const position_t &pos,
-                                              SceneBaseObject *obj,
-                                              source_vect_t &source)
+Ray RayCastingEngine::generate_reflection_ray(
+    const position_t &pos, SceneBaseObject *obj, source_vect_t &source)
 {
   auto normal = obj->getNormal(pos);
   auto L = source.second;
