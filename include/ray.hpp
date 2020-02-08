@@ -11,6 +11,7 @@ private:
   position_t m_pos;
   vector_t m_direction;
   RGBColor m_color;
+  Ray *m_fundamental;
 
 public:
   Ray();
@@ -25,6 +26,8 @@ public:
   void setDirection(const vector_t &direction);
   void setColor(RGBColor color) { swap(color, m_color); }
   Ray &operator=(const Ray &);
+  Ray *get_fundamental();
+  ~Ray(){};
 };
 
 using genRays_t = std::tuple<Ray, Ray>;
