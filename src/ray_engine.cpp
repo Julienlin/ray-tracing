@@ -79,73 +79,7 @@ void RayCastingEngine::compute()
     {
       nb_intersec++;
 
-      // pt_pos is the position of the intersection.
-      position_t pt_pos =
-          std::get<0>(dist)->getPos() + std::get<2>(dist) * std::get<0>(dist)->getDirection();
-      std::get<0>(dist)->setColor(std::get<1>(dist)->getSurface()->getColor(pt_pos));
-
-      // determining all light sources reachable from this point
-      std::vector<source_vect_t> reachables;
-      get_reachable_sources(*std::get<0>(dist), std::get<1>(dist), pt_pos, reachables);
-      // get_reachable_sources(m_rays[i], distances[i], reachables);
-      // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
-
-      unsigned nb_reachables_R = reachables.size();
-      // Determining the perfect reflected ray foreach sources
-
-      if (nb_reachables_R > 0)
-      {
-        std::vector<Ray> R;
-        R.reserve(nb_reachables_R);
-        for (unsigned j = 0; j < nb_reachables_R; j++)
-        {
-          R[j] = generate_reflection_ray(dist, reachables[j]);
-          // R[j] = generate_reflection_ray(m_rays[i], distances[i], reachables[j]);
-          // std::cout << "R[" << j << "] direction : " << R[j].getDirection() << std::endl;
-        }
-
-        position_t pt_pos =
-            std::get<0>(dist)->getPos() + std::get<2>(dist) * std::get<0>(dist)->getDirection();
-
-        // Determining the illumination of the point / ray
-        vector_t V = m_obs_pos - pt_pos;
-        V.normalize();
-        auto ray_color = std::get<0>(dist)->getColor();
-        auto new_color = RGB_BLACK;
-
-        for (unsigned j = 0; j < nb_reachables_R; j++)
-        {
-          auto N = std::get<1>(dist)->getNormal(pt_pos);
-          auto L = reachables[j].second;
-          auto k_s = std::get<1>(dist)->get_spec_reflect();
-          auto k_d = std::get<1>(dist)->get_diff_reflect();
-          auto alpha = std::get<1>(dist)->get_shine();
-          auto i_d = reachables[j].first->get_diffusion();
-          auto i_s = reachables[j].first->get_intensity();
-          auto RV = R[j].getDirection() * V;
-          auto LN = (L * N);
-
-          // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
-          //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
-
-          if (LN > 0)
-          {
-            new_color += k_d * LN * i_d * ray_color;
-          }
-
-          if (RV > 0)
-          {
-            new_color += k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
-          }
-        }
-        auto k_a = std::get<1>(dist)->get_amb_reflect();
-        new_color += m_amb_lighting * k_a * new_color;
-        std::get<0>(dist)->setColor(new_color);
-      }
-      else
-      {
-        std::get<0>(dist)->setColor(RGB_BLACK);
-      }
+      last_step(dist);
     }
   }
   spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
@@ -203,17 +137,6 @@ RayCastingEngine::ray_obj_dist_t RayCastingEngine::get_intersection(Ray *ray)
   return obstacle;
 }
 
-// Ray RayCastingEngine::generate_reflection_ray(
-//     const position_t &pos, SceneBaseObject *obj, source_vect_t &source)
-// {
-//   auto normal = obj->getNormal(pos);
-//   auto L = source.second;
-//   auto x = L * normal;
-//   auto direction = 2 * x * normal - L;
-//   direction.normalize();
-//   return Ray(pos, direction);
-// }
-
 Ray RayCastingEngine::generate_reflection_ray(ray_obj_dist_t &dist, source_vect_t &source)
 {
   Ray *ray = std::get<0>(dist);
@@ -226,4 +149,99 @@ Ray RayCastingEngine::generate_reflection_ray(ray_obj_dist_t &dist, source_vect_
   direction.normalize();
   Ray new_ray(pos, direction, std::get<1>(dist)->getSurface()->getColor(pos), ray->get_fundamental());
   return new_ray;
+}
+
+RGBColor RayCastingEngine::compute_color(ray_obj_dist_t &dist, source_vect_t &source, Ray &reflected)
+{
+
+  Ray *ray = std::get<0>(dist);
+  double t = std::get<2>(dist);
+  position_t pt_pos = ray->getPos() + t * ray->getDirection();
+  // Determining the illumination of the point / ray
+  vector_t V = m_obs_pos - pt_pos;
+  V.normalize();
+
+  auto ray_color = std::get<0>(dist)->getColor();
+  auto new_color = RGB_BLACK;
+
+  auto N = std::get<1>(dist)->getNormal(pt_pos);
+  auto L = source.second;
+  auto k_s = std::get<1>(dist)->get_spec_reflect();
+  auto k_d = std::get<1>(dist)->get_diff_reflect();
+  auto alpha = std::get<1>(dist)->get_shine();
+  auto i_d = source.first->get_diffusion();
+  auto i_s = source.first->get_intensity();
+  auto RV = reflected.getDirection() * V;
+  auto LN = (L * N);
+
+  // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
+  //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
+
+  if (LN > 0)
+  {
+    new_color += k_d * LN * i_d * ray_color;
+  }
+
+  if (RV > 0)
+  {
+    new_color += k_s * power<double>(RV, alpha) * i_s * RGB_WHITE;
+  }
+  return new_color;
+}
+
+void RayCastingEngine::last_step(ray_obj_dist_t &dist)
+{
+  // pt_pos is the position of the intersection.
+  position_t pt_pos =
+      std::get<0>(dist)->getPos() + std::get<2>(dist) * std::get<0>(dist)->getDirection();
+  std::get<0>(dist)->setColor(std::get<1>(dist)->getSurface()->getColor(pt_pos));
+
+  // determining all light sources reachable from this point
+  std::vector<source_vect_t> reachables;
+  get_reachable_sources(*std::get<0>(dist), std::get<1>(dist), pt_pos, reachables);
+  // get_reachable_sources(m_rays[i], distances[i], reachables);
+  // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
+
+  unsigned nb_reachables_R = reachables.size();
+  // Determining the perfect reflected ray foreach sources
+
+  if (nb_reachables_R > 0)
+  {
+    std::vector<Ray> R;
+    R.reserve(nb_reachables_R);
+    for (unsigned j = 0; j < nb_reachables_R; j++)
+    {
+      R[j] = generate_reflection_ray(dist, reachables[j]);
+    }
+
+    auto new_color = RGB_BLACK;
+
+    for (unsigned j = 0; j < nb_reachables_R; j++)
+    {
+      auto reachable = reachables[j];
+      auto r = R[j];
+      new_color += compute_color(dist, reachable, r);
+    }
+    auto k_a = std::get<1>(dist)->get_amb_reflect();
+    new_color += m_amb_lighting * k_a * new_color;
+    if (std::get<0>(dist)->get_fundamental() == nullptr)
+    {
+      std::get<0>(dist)->setColor(new_color);
+    }
+    else
+    {
+      std::get<0>(dist)->get_fundamental()->setColor(new_color);
+    }
+  }
+  else
+  {
+    if (std::get<0>(dist)->get_fundamental() == nullptr)
+    {
+      std::get<0>(dist)->setColor(RGB_BLACK);
+    }
+    else
+    {
+      std::get<0>(dist)->get_fundamental()->setColor(RGB_BLACK);
+    }
+  }
 }

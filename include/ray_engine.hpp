@@ -61,6 +61,8 @@ public:
   ray_obj_dist_t get_intersection(Ray *);
   void get_reachable_sources(Ray &, SceneBaseObject *, position_t, std::vector<source_vect_t> &);
   Ray generate_reflection_ray(ray_obj_dist_t &, source_vect_t &);
+  RGBColor compute_color(ray_obj_dist_t &dist, source_vect_t &source, Ray &reflected);
+  void last_step(ray_obj_dist_t &);
 };
 
 #endif // __RAY_CASTING_H_
