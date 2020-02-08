@@ -10,6 +10,7 @@
 #include <limits>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
+#include <sstream>
 #include <vector>
 
 class RayEngine
@@ -21,6 +22,7 @@ protected:
   Screen m_screen;
   position_t m_obs_pos;
   int m_deepth;
+  static constexpr double MAX_HORIZON = 1e18;
 
 public:
   using ray_dist_t = std::pair<Ray, double>;
@@ -50,8 +52,8 @@ public:
   RayCastingEngine(RayCastingEngine &&engine) = default;
   void compute();
   obj_dist_t get_intersection(Ray &);
-  void get_reachable_sources(position_t, std::vector<source_vect_t> &);
-  Ray make_reflect_ray(const position_t &, SceneBaseObject *, source_vect_t &);
+  void get_reachable_sources(Ray &, SceneBaseObject *, position_t, std::vector<source_vect_t> &);
+  Ray generate_reflection_ray(const position_t &, SceneBaseObject *, source_vect_t &);
 };
 
 #endif // __RAY_CASTING_H_

@@ -19,7 +19,6 @@ public:
   SceneSphere() : m_center(POSITION_T_NULL), m_radius(0) {}
   SceneSphere(ObjectBaseSurface *surface, position_t center, double radius);
 
-  genRays_t generateRays(const Ray &incident_ray);
   /**
    * @brief Test whether the ray is intersecting the object.
    *
@@ -29,8 +28,6 @@ public:
    */
   double intersecDist(const Ray &ray);
 
-  Ray generateReflectionRay(const Ray &incident);
-  Ray generateRefractionRay(const Ray &incident);
   /**
    * @brief get the normal to the surface passing by POS.
    *
