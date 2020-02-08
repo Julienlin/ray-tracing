@@ -18,6 +18,7 @@ public:
     ScenePlane(ObjectBaseSurface *surface, position_t origin, vector_t e1, vector_t e2);
     vector_t getNormal(const position_t &pos);
     double intersecDist(const Ray &ray);
+    RGBColor getColor(position_t &pos) const;
 };
 
 #endif

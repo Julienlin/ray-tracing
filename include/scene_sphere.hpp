@@ -36,6 +36,8 @@ public:
    * @return the normal to the surface passing by POS.
    */
   vector_t getNormal(const position_t &pos);
+
+  RGBColor getColor(position_t &pos) const;
 };
 
 #endif // __SCENE_SPHERE_H_

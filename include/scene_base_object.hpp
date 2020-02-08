@@ -31,6 +31,9 @@ public:
   virtual vector_t getNormal(const position_t &pos) = 0;
 
   ObjectBaseSurface *getSurface() const;
+  virtual RGBColor getColor(position_t &pos) const = 0;
+
+  RGBColor getColor() const;
   double get_spec_reflect() const { return m_spec_reflect; }
   double get_diff_reflect() const { return m_diff_reflect; }
   double get_amb_reflect() const { return m_amb_reflect; }

@@ -38,3 +38,8 @@ double ScenePlane::intersecDist(const Ray &ray)
 
     return t > MIN_PROXIMITY ? t : -1;
 }
+
+RGBColor ScenePlane::getColor(position_t &pos) const
+{
+    return m_surface->getColor(pos);
+}

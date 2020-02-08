@@ -28,3 +28,8 @@ vector_t SceneSphere::getNormal(const position_t &pos)
 {
   return vector_t(pos - m_center).normalize();
 }
+
+RGBColor SceneSphere::getColor(position_t &pos) const
+{
+  return m_surface->getColor(pos);
+}
