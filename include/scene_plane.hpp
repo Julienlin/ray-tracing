@@ -2,6 +2,7 @@
 #define SCENE_PLANE_HPP
 
 #include <cmath>
+#include <iostream>
 #include <scene_base_object.hpp>
 #include <types.hpp>
 
