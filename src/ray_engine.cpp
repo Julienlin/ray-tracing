@@ -134,7 +134,6 @@ void RayCastingEngine::compute()
       }
     }
   }
-  std::stringstream ss;
   spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
 
   // Determine the color for each pixel
