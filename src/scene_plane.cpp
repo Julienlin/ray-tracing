@@ -31,9 +31,10 @@ double ScenePlane::intersecDist(const Ray &ray)
     }
 
     // TODO: finding a way to determine the "good side" of the plane
-
+    // TODO: look if every ray's t are not null
     t = (m_normal * origin_to_pos) / d;
     // double u = ((m_e2 ^ direction) * origin_to_pos) / d;
     // double v = ((direction ^ m_e1) * origin_to_pos) / d;
-    return t > 0 ? t : -1;
+
+    return t > MIN_PROXIMITY ? t : -1;
 }

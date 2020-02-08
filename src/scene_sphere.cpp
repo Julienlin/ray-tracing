@@ -12,11 +12,11 @@ double SceneSphere::intersecDist(const Ray &ray)
   double s_v = v * v, discriminant = s_v_d * s_v_d - s_v + m_radius * m_radius;
   // std::cout << "ray.getPos() : " << ray.getPos() << "\tm_center : " << m_center << "\tv : " << v << "\tnormal_direc : " << normal_direc << "\ts_v_d : " << s_v_d << "\ts_v : " << s_v << "\tdiscriminant : " << discriminant << std::endl;
   double res = -1;
-  if (-s_v_d - std::sqrt(discriminant) > 1e-10)
+  if (-s_v_d - std::sqrt(discriminant) > MIN_PROXIMITY)
   {
     res = -s_v_d - std::sqrt(discriminant);
   }
-  else if (-s_v_d + std::sqrt(discriminant) > 1e-10)
+  else if (-s_v_d + std::sqrt(discriminant) > MIN_PROXIMITY)
   {
     res = -s_v_d + std::sqrt(discriminant);
   }

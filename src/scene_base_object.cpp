@@ -5,4 +5,4 @@ SceneBaseObject::SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect
       m_diff_reflect(diff_reflect), m_amb_reflect(amb_reflect),
       m_shine(shine) {}
 
-ObjectBaseSurface *SceneBaseObject::getSurface() { return m_surface; }
+ObjectBaseSurface *SceneBaseObject::getSurface() const { return m_surface; }

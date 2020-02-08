@@ -11,6 +11,7 @@ class SceneBaseObject
 protected:
   ObjectBaseSurface *m_surface;
   double m_spec_reflect, m_diff_reflect, m_amb_reflect, m_shine;
+  static constexpr double MIN_PROXIMITY = 1e-10;
 
 public:
   SceneBaseObject() : m_surface(nullptr){};
@@ -29,11 +30,11 @@ public:
    */
   virtual vector_t getNormal(const position_t &pos) = 0;
 
-  ObjectBaseSurface *getSurface();
-  double get_spec_reflect() { return m_spec_reflect; }
-  double get_diff_reflect() { return m_diff_reflect; }
-  double get_amb_reflect() { return m_amb_reflect; }
-  double get_shine() { return m_shine; }
+  ObjectBaseSurface *getSurface() const;
+  double get_spec_reflect() const { return m_spec_reflect; }
+  double get_diff_reflect() const { return m_diff_reflect; }
+  double get_amb_reflect() const { return m_amb_reflect; }
+  double get_shine() const { return m_shine; }
 };
 
 #endif // __SCENE_BASE_OBJECT_H_
