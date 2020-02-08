@@ -62,3 +62,4 @@ rayTracing
 bin/*
 build/*
 Makefile
+docs/*
