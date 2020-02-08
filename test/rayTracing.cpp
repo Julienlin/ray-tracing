@@ -30,10 +30,10 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  // sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
-  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  sources.push_back(LightSource(position_t(0, 0, 1000), 10., 10.));
+  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
   position_t observer_pos(0, -1000, 0);
-  sources.push_back(LightSource(observer_pos, 1., 2.));
+  // sources.push_back(LightSource(observer_pos, 1., 2.));
 
   double size_pix = 0.25;
   int nb_pix = 1000;

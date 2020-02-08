@@ -12,6 +12,7 @@
 #include "types.hpp"
 #include <iostream>
 #include <scene_plane.hpp>
+#include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 #include <sstream>
