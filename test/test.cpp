@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
-  SceneTriangle tri(&surf_yellow, position_t(150,500,400), position_t(-150,500,200), position_t(0,500,0));
+  SceneTriangle tri(&surf_yellow, position_t(150,500,400), position_t(-150,500,400), position_t(0,500,0));
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
   objects.push_back(&sphere3);
