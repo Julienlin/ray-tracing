@@ -282,12 +282,12 @@ RGBColor RayCastingEngine::intermediairy_step(ray_obj_dist_t dist, int deepth)
 
     double reflect_coef = std::get<1>(dist)->get_reflect();
     // RGBColor ray_color = std::get<0>(dist)->getColor();
-    auto k_a = std::get<1>(dist)->get_amb_reflect();
+    // auto k_a = std::get<1>(dist)->get_amb_reflect();
 
     RGBColor new_color = step(dist);
-    if (std::get<2>(refleted) < std::numeric_limits<double>::infinity())
+    if (std::get<2>(refleted) < std::numeric_limits<double>::infinity() && reflect_coef >0)
     {
-      new_color += reflect_coef * reflect_color * m_amb_lighting * k_a;
+      new_color += reflect_coef * reflect_color;
     }
 
     if (std::get<0>(dist)->get_fundamental() == nullptr)
