@@ -10,12 +10,18 @@ class SceneBaseObject
 {
 protected:
   ObjectBaseSurface *m_surface;
-  double m_spec_reflect, m_diff_reflect, m_amb_reflect, m_shine;
+
+  double m_reflect;
+  double m_refract;
+  double m_spec_reflect;
+  double m_diff_reflect;
+  double m_amb_reflect;
+  double m_shine;
   static constexpr double MIN_PROXIMITY = 1e-10;
 
 public:
   SceneBaseObject() : m_surface(nullptr){};
-  SceneBaseObject(ObjectBaseSurface *surface, double spec_reflect = 0.5, double diff_reflect = 0.5, double amb_reflect = 0.5, double shine = 10.);
+  SceneBaseObject(ObjectBaseSurface *surface, double refflect = 0, double spec_reflect = 0.5, double diff_reflect = 0.5, double amb_reflect = 0.5, double shine = 10.);
   SceneBaseObject(const SceneBaseObject &obj) = default;
   SceneBaseObject(SceneBaseObject &&obj) = default;
   virtual ~SceneBaseObject(){};
@@ -38,6 +44,7 @@ public:
   double get_diff_reflect() const { return m_diff_reflect; }
   double get_amb_reflect() const { return m_amb_reflect; }
   double get_shine() const { return m_shine; }
+  double get_reflect() const { return m_reflect; }
 };
 
 #endif // __SCENE_BASE_OBJECT_H_
