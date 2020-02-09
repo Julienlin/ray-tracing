@@ -7,7 +7,7 @@ use the following cli:
 ```bash
 cd ray-tracing
 cp Makefile.template Makefile
-make
+make all
 
 ```
 
@@ -17,13 +17,13 @@ use `make docs`
 
 # Description du projet
 
-Ce projet a pour but de développer un outil de rendu d'image par la technique du tracé de rayon (ray tracing). L'ojectif du projet est donc de développer une bibliothèque permettant le rendu d'image.
+Ce projet a pour but de développer un outil de rendu d'image par la technique du tracé de rayon (ray tracing). L'objectif du projet est donc de développer une bibliothèque permettant le rendu d'image.
 
 En l'état actuel, Le projet est capable de générer des objets tels que des sphères et des plans avec le modèle de réflection de Phong sans prendre totalement en compte la propriété de reflection ni de réfraction des objets. Il y a de plus une gestion simple des ombres par la méthode des shadow rays. Le ray-tracing comprend par ailleurs un moteur simple de rendu par multithreading en utilisant la bibliothèque openmp.
 
 Ce qui aurait été souhaitable de faire dans ce projet est la gestion des triangles ainsi que d'un module permettant de travailler sur un fichier de description de scène en utilisant un format compatible avec d'autre logiciel de rendu de scène par exemple Blender. Il aurait été souhaitable de pouvoir prendre en compte la réfraction des objets.
 
-Ce ray tracing prend mal en compte les propriétés de réflexion et de réfraction. Une amélioration possible est la prise en compte de ces effets. Une autre amélioration possible est l'utilisation d'un langage de description de scène pour permettre une utilisation plus aisée de l'outil. Par ailleurs, on utilise des scalaires pour caratériser les coefficients d'illumination des objets, une amélioration possible est d'utiliser des vecteurs pour pouvoir avoir un coefficient par couleur fondamentale.
+Ce ray tracing prend mal en compte les propriétés de réflexion et de réfraction. Une amélioration possible est la prise en compte de ces effets. Une autre amélioration possible est l'utilisation d'un langage de description de scène pour permettre une utilisation plus aisée de l'outil. Par ailleurs, on utilise des scalaires pour caractériser les coefficients d'illumination des objets, une amélioration possible est d'utiliser des vecteurs pour pouvoir avoir un coefficient par couleur fondamentale.
 
 # L'algorithme du moteur de rendu
 

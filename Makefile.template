@@ -22,12 +22,7 @@ LIB=
 MKDIR_P = mkdir -p
 # SOURCES = types.o ray.o  light_source.o screen.o scene_base_object.o scene_sphere.o ray_engine.o
 
-# %.o : %.c
-# 	$(CXX) $(CXXFLAGS) $(INC) -c -o $@ $^
-
-# clean :
-# 	rm -f $(SOURCES)
-# 	rm -f $(EXEC)
+all : plane just_plane rayTracing docs
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	# @echo "$(SOURCES)"
