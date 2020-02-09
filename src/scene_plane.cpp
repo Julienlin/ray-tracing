@@ -1,13 +1,13 @@
 #include <scene_plane.hpp>
 
-ScenePlane::ScenePlane(ObjectBaseSurface *surface, double spec_reflect, double diff_reflect, double amb_reflect, double shine, position_t origin, vector_t e1, vector_t e2) : SceneBaseObject(surface, spec_reflect, diff_reflect, amb_reflect, shine), m_origin(origin), m_e1(e1), m_e2(e2), m_normal(m_e1 ^ m_e2)
+ScenePlane::ScenePlane(ObjectBaseSurface *surface, position_t origin, vector_t e1, vector_t e2, double reflect, double spec_reflect, double diff_reflect, double amb_reflect, double shine) : SceneBaseObject(surface, reflect, spec_reflect, diff_reflect, amb_reflect, shine), m_origin(origin), m_e1(e1), m_e2(e2), m_normal(m_e1 ^ m_e2)
 {
     m_e1.normalize();
     m_e2.normalize();
     m_normal.normalize();
 }
 
-ScenePlane::ScenePlane(ObjectBaseSurface *surface, position_t origin, vector_t e1, vector_t e2) : SceneBaseObject(surface), m_origin(origin), m_e1(e1), m_e2(e2), m_normal(m_e1 ^ m_e2) {}
+// ScenePlane::ScenePlane(ObjectBaseSurface *surface, position_t origin, vector_t e1, vector_t e2) : SceneBaseObject(surface), m_origin(origin), m_e1(e1), m_e2(e2), m_normal(m_e1 ^ m_e2) {}
 
 vector_t ScenePlane::getNormal(const position_t &pos)
 {
