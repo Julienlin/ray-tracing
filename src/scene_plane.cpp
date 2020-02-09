@@ -11,6 +11,11 @@ ScenePlane::ScenePlane(ObjectBaseSurface *surface, position_t origin, vector_t e
 
 vector_t ScenePlane::getNormal(const position_t &pos)
 {
+    if (m_normal * pos >0)
+    {
+        return -m_normal;
+    }
+
     return m_normal;
 }
 
