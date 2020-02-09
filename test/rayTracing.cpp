@@ -14,16 +14,26 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_cyan(RGB_BLUE + RGB_GREEN);
+  SurfaceUniformedColor surf_magenta(RGB_RED + RGB_BLUE);
+  SurfaceUniformedColor surf_gray(RGB_SILVER_GREY);
+  SurfaceUniformedColor surf_left(0.5 * RGB_GREEN + 0.3 * RGB_BLUE + 0.4 * RGB_RED);
+  SurfaceUniformedColor surf_right(0.5 * RGB_GREEN + 0.2 * RGB_BLUE + 0.7 * RGB_RED);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80, 0.5);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60, 0.7);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 1);
-  ScenePlane plane(&surf_cyan, position_t(0, 300, 0), E1, E3 + 10 * E2);
+  SceneSphere sphere5(&surf_magenta, position_t(-800, 500, 600), 50, 1);
+  ScenePlane plane(&surf_cyan, position_t(0, 300, 0), E1, E3 );
+  ScenePlane plane_left(&surf_left, position_t(1000, 0, 0), E2, E3);
+  ScenePlane plane_right(&surf_left, position_t(-1000, 0, 0), E2, E3);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
   objects.push_back(&sphere3);
   objects.push_back(&sphere4);
+  objects.push_back(&sphere5);
   objects.push_back(&plane);
+  objects.push_back(&plane_left);
+  objects.push_back(&plane_right);
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
@@ -44,6 +54,8 @@ int main(int argc, char const *argv[])
   position_t screen_pos(-top_left, 0, top_left);
   Screen screen(nb_pix, nb_pix, size_pix, E1, -E3, screen_pos);
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos, RGB_BLACK, 1.);
+  RayEngineThread thread_engine(objects, sources, screen, observer_pos, RGB_BLACK, 1.);
+
   RayEngine *engine = &casting_engine;
 
   engine->compute();

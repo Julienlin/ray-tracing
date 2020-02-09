@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
-  SceneTriangle tri(&surf_yellow, position_t(1500, 100, 0), position_t(-1500, 1000, 0), position_t(0, 100, 1500));
+  SceneTriangle tri(&surf_yellow, position_t(1500, 10, 0), position_t(-1500, 10, 0), position_t(0, 10, 1500));
   // objects.push_back(&sphere);
   // objects.push_back(&sphere2);
   // objects.push_back(&sphere3);
@@ -47,7 +47,7 @@ int main(int argc, char const *argv[])
   sources.push_back(LightSource(position_t(0, -1000, 0), 10., 2.));
 
   double size_pix = 0.25;
-  int nb_pix = 1000;
+  int nb_pix = 5;
   int size_screen = nb_pix * size_pix, top_left = size_screen / 2;
   // std::cout << "size of the screen : " << size_screen << "\ttop left : " << top_left << std::endl;
   position_t screen_pos(-top_left, 0, top_left);
