@@ -52,9 +52,11 @@ void RayCastingEngine::compute()
 
   // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
   // std::vector<obj_dist_t> distances;
-  // std::vector<ray_obj_dist_t> distances;
-  std::deque<ray_obj_dist_t> distances(nb_rays * 2 * m_deepth);
-  // distances.reserve(nb_rays * 2 * m_deepth);
+  std::vector<ray_obj_dist_t> distances;
+  // std::deque<ray_obj_dist_t> distances(nb_rays * 2 * m_deepth);
+  // std::deque<ray_obj_dist_t> distances_buf(nb_rays * 2 * m_deepth);
+  int nb_tt_rays = nb_rays * 2 * m_deepth;
+  distances.reserve(nb_tt_rays);
   for (int i = 0; i < nb_rays; i++)
   {
     auto ray = m_rays[i];
@@ -67,21 +69,21 @@ void RayCastingEngine::compute()
   }
 
   int nb_intersec = 0;
-  while (!distances.empty())
+  for (int i = 0; i < nb_tt_rays; i++)
   {
     // Determing the color of rays
     // testing if > 0 in the case of when the image is split by a plan  some ray can be on the plane so we don't want to compute the color first.
 
-    ray_obj_dist_t dist = distances.front();
-    distances.pop_front();
+    ray_obj_dist_t dist = distances[i];
 
     if (std::get<2>(dist) < std::numeric_limits<double>::infinity() && std::get<2>(dist) > 0)
     {
       nb_intersec++;
 
-      last_step(dist);
+      step(dist);
     }
   }
+
   spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
 
   // Determine the color for each pixel
@@ -189,7 +191,7 @@ RGBColor RayCastingEngine::compute_color(ray_obj_dist_t &dist, source_vect_t &so
   return new_color;
 }
 
-void RayCastingEngine::last_step(ray_obj_dist_t &dist)
+RGBColor RayCastingEngine::step(ray_obj_dist_t &dist)
 {
   // pt_pos is the position of the intersection.
   position_t pt_pos =
@@ -244,4 +246,42 @@ void RayCastingEngine::last_step(ray_obj_dist_t &dist)
       std::get<0>(dist)->get_fundamental()->setColor(RGB_BLACK);
     }
   }
+}
+
+RGBColor RayCastingEngine::intermediairy_step(ray_obj_dist_t dist, int deepth)
+{
+  if (std::get<2>(dist) == std::numeric_limits<double>::infinity())
+  {
+    return m_background_color;
+  }
+  if (deepth == 0)
+  {
+    return step(dist);
+  }
+  else
+  {
+    // pt_pos is the position of the intersection.
+    position_t pt_pos =
+        std::get<0>(dist)->getPos() + std::get<2>(dist) * std::get<0>(dist)->getDirection();
+    std::get<0>(dist)->setColor(std::get<1>(dist)->getSurface()->getColor(pt_pos));
+    Ray reflec_ray = generate_reflection_ray(dist);
+    ray_obj_dist_t refleted = get_intersection(&reflec_ray);
+    RGBColor reflect_color = intermediairy_step(refleted, deepth - 1);
+    // TODO: refaire le calcul comme sur la page wikpedia mais cette fois ci avec les reflect_color
+    // ON A PEUT ËTRE BESOIN DE L'OBJET suivant ou pas;
+    // RGBColor new_color = ;
+  }
+}
+
+Ray RayCastingEngine::generate_reflection_ray(ray_obj_dist_t &dist)
+{
+  Ray *ray = std::get<0>(dist);
+  double t = std::get<2>(dist);
+  position_t pos = ray->getPos() + t * ray->getDirection();
+  auto normal = std::get<1>(dist)->getNormal(pos);
+  vector_t incident = ray->getDirection();
+  incident.normalize();
+  vector_t reflected = 2 * (incident * normal) * normal - incident;
+  RGBColor color = std::get<1>(dist)->getColor(pos);
+  return Ray(pos, reflected, color, ray->get_fundamental());
 }
