@@ -15,9 +15,9 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_cyan(RGB_BLUE + RGB_GREEN);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
-  SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
-  SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
-  SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
+  SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80, 0.5);
+  SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60, 0.7);
+  SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 1);
   ScenePlane plane(&surf_cyan, position_t(0, 300, 0), E1, E3 + 10 * E2);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);

@@ -11,22 +11,26 @@ int main(int argc, char const *argv[])
   spdlog::get("console")->info("Creating objects...");
   std::vector<SceneBaseObject *> objects;
   SurfaceUniformedColor surf_red(RGB_RED);
+  SurfaceUniformedColor surf_black(RGB_BLACK);
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
-  ScenePlane plan(&surf_yellow, position_t(0, 190, 0), E1, E3);
-  SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
+  ScenePlane plan(&surf_black, position_t(0, 500, 0), E1, E3, 1, 0, 0, 0);
+  ScenePlane plan1(&surf_yellow, position_t(0, 0, -300), E1, E2);
+  SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25, 0.5);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
-  SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50);
+  SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
   objects.push_back(&sphere3);
   objects.push_back(&sphere4);
 
-  objects.push_back(&plan);
+  // objects.push_back(&plan);
+  objects.push_back(&plan1);
 
-  spdlog::get("console")->info("Creating sources...");
+  spdlog::get("console")
+      ->info("Creating sources...");
   std::vector<LightSource> sources;
   // position_t src_pos(100, -10, -100);
   // LightSource source(src_pos, 1., 1.);
@@ -47,19 +51,7 @@ int main(int argc, char const *argv[])
   RayCastingEngine casting_engine(objects, sources, screen, observer_pos);
   RayEngine *engine = &casting_engine;
 
-  std::vector<Ray> ray_vec(203);
-  Ray detest;
-  vector_t e3(0, 0, 1);
-  for (int i = 0; i < 203; i++)
-  {
-    ray_vec[i] = Ray(position_t(1, 2, i), E2, RGB_BLACK, &detest);
-    if (i == 20)
-    {
-      ray_vec[i].get_fundamental()->setDirection(e3);
-    }
-  }
-
-  std::cout << detest.getDirection() << std::endl;
+  engine->compute();
 
   spdlog::get("console")
       ->info("Writing image...");
@@ -69,6 +61,8 @@ int main(int argc, char const *argv[])
   {
     filename = std::string(argv[1]);
   }
+
+  engine->get_screen().write(filename);
 
   std::stringstream ss;
 

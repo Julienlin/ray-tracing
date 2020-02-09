@@ -80,7 +80,9 @@ void RayCastingEngine::compute()
     {
       nb_intersec++;
 
-      step(dist);
+      RGBColor color = intermediairy_step(dist, m_deepth);
+
+      // step(dist);
     }
   }
 
@@ -226,25 +228,27 @@ RGBColor RayCastingEngine::step(ray_obj_dist_t &dist)
     }
     auto k_a = std::get<1>(dist)->get_amb_reflect();
     new_color += m_amb_lighting * k_a * new_color;
-    if (std::get<0>(dist)->get_fundamental() == nullptr)
-    {
-      std::get<0>(dist)->setColor(new_color);
-    }
-    else
-    {
-      std::get<0>(dist)->get_fundamental()->setColor(new_color);
-    }
+    // if (std::get<0>(dist)->get_fundamental() == nullptr)
+    // {
+    //   std::get<0>(dist)->setColor(new_color);
+    // }
+    // else
+    // {
+    //   std::get<0>(dist)->get_fundamental()->setColor(new_color);
+    // }
+    return new_color;
   }
   else
   {
-    if (std::get<0>(dist)->get_fundamental() == nullptr)
-    {
-      std::get<0>(dist)->setColor(RGB_BLACK);
-    }
-    else
-    {
-      std::get<0>(dist)->get_fundamental()->setColor(RGB_BLACK);
-    }
+    // if (std::get<0>(dist)->get_fundamental() == nullptr)
+    // {
+    //   std::get<0>(dist)->setColor(RGB_BLACK);
+    // }
+    // else
+    // {
+    //   std::get<0>(dist)->get_fundamental()->setColor(RGB_BLACK);
+    // }
+    return m_background_color;
   }
 }
 
@@ -268,8 +272,22 @@ RGBColor RayCastingEngine::intermediairy_step(ray_obj_dist_t dist, int deepth)
     ray_obj_dist_t refleted = get_intersection(&reflec_ray);
     RGBColor reflect_color = intermediairy_step(refleted, deepth - 1);
     // TODO: refaire le calcul comme sur la page wikpedia mais cette fois ci avec les reflect_color
-    // ON A PEUT ËTRE BESOIN DE L'OBJET suivant ou pas;
-    // RGBColor new_color = ;
+
+    double reflect_coef = std::get<1>(dist)->get_reflect();
+    // RGBColor ray_color = std::get<0>(dist)->getColor();
+    auto k_a = std::get<1>(dist)->get_amb_reflect();
+
+    RGBColor new_color = step(dist) + reflect_coef * reflect_color * m_amb_lighting * k_a;
+
+    if (std::get<0>(dist)->get_fundamental() == nullptr)
+    {
+      std::get<0>(dist)->setColor(new_color);
+    }
+    else
+    {
+      std::get<0>(dist)->get_fundamental()->setColor(new_color);
+    }
+    return new_color;
   }
 }
 
