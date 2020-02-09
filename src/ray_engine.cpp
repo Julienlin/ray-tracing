@@ -80,17 +80,17 @@ void RayCastingEngine::compute()
     {
       nb_intersec++;
 
-      // RGBColor color = intermediairy_step(dist, m_deepth);
+      RGBColor color = intermediairy_step(dist, m_deepth);
 
-      RGBColor color = step(dist);
-      if (std::get<0>(dist)->get_fundamental() == nullptr)
-      {
-        std::get<0>(dist)->setColor(color);
-      }
-      else
-      {
-        std::get<0>(dist)->get_fundamental()->setColor(color);
-      }
+      // RGBColor color = step(dist);
+      // if (std::get<0>(dist)->get_fundamental() == nullptr)
+      // {
+      //   std::get<0>(dist)->setColor(color);
+      // }
+      // else
+      // {
+      //   std::get<0>(dist)->get_fundamental()->setColor(color);
+      // }
     }
   }
 
@@ -279,13 +279,16 @@ RGBColor RayCastingEngine::intermediairy_step(ray_obj_dist_t dist, int deepth)
     Ray reflec_ray = generate_reflection_ray(dist);
     ray_obj_dist_t refleted = get_intersection(&reflec_ray);
     RGBColor reflect_color = intermediairy_step(refleted, deepth - 1);
-    // TODO: refaire le calcul comme sur la page wikpedia mais cette fois ci avec les reflect_color
 
     double reflect_coef = std::get<1>(dist)->get_reflect();
     // RGBColor ray_color = std::get<0>(dist)->getColor();
     auto k_a = std::get<1>(dist)->get_amb_reflect();
 
-    RGBColor new_color = step(dist) + reflect_coef * reflect_color * m_amb_lighting * k_a;
+    RGBColor new_color = step(dist);
+    if (std::get<2>(refleted) < std::numeric_limits<double>::infinity())
+    {
+      new_color += reflect_coef * reflect_color * m_amb_lighting * k_a;
+    }
 
     if (std::get<0>(dist)->get_fundamental() == nullptr)
     {
