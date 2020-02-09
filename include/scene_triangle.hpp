@@ -1,4 +1,5 @@
 #include<scene_base_object.hpp>
+#include <iostream>
 
 class SceneTriangle : public SceneBaseObject
 {
