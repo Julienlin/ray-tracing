@@ -51,10 +51,9 @@ void RayCastingEngine::compute()
   spdlog::get("console")->info("Rendering scene...");
 
   // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
-  // std::vector<obj_dist_t> distances;
+
   std::vector<ray_obj_dist_t> distances;
-  // std::deque<ray_obj_dist_t> distances(nb_rays * 2 * m_deepth);
-  // std::deque<ray_obj_dist_t> distances_buf(nb_rays * 2 * m_deepth);
+
   int nb_tt_rays = nb_rays * 2 * m_deepth;
   distances.reserve(nb_tt_rays);
   for (int i = 0; i < nb_rays; i++)
@@ -82,15 +81,6 @@ void RayCastingEngine::compute()
 
       RGBColor color = intermediairy_step(dist, m_deepth);
 
-      // RGBColor color = step(dist);
-      // if (std::get<0>(dist)->get_fundamental() == nullptr)
-      // {
-      //   std::get<0>(dist)->setColor(color);
-      // }
-      // else
-      // {
-      //   std::get<0>(dist)->get_fundamental()->setColor(color);
-      // }
     }
   }
 
@@ -116,11 +106,9 @@ void RayCastingEngine::get_reachable_sources(
   {
     vector_t direction = m_sources[i].get_pos() - pos;
     direction.normalize();
-    // std::cout << "direction pos to source : " << direction << std::endl;
     Ray ray(pos, direction);
     ray_obj_dist_t obstacle = get_intersection(&ray);
     std::stringstream ss;
-    // ss << "ray_incident.getDirection() : " << ray_incident.getDirection() << "\t normal : " << normal << "\tpos to source" << m_sources[i].get_pos() - pos << "\tpos : " << pos << "\t(ray_incident.getDirection() * normal) * (normal * (-direction)) : " << (ray_incident.getDirection() * normal) * (normal * (-direction)) << "\t(ray_incident.getDirection() * normal) * (normal * (-direction)) > 0 : " << ((ray_incident.getDirection() * normal) * (normal * (-direction)) > 0) << "\tobstacle.second : " << obstacle.second;
 
     if (std::get<2>(obstacle) == std::numeric_limits<double>::infinity())
     {
@@ -139,8 +127,7 @@ RayCastingEngine::ray_obj_dist_t RayCastingEngine::get_intersection(Ray *ray)
   for (auto obj : m_objects)
   {
     ray_obj_dist_t new_dist(ray, obj, obj->intersecDist(*ray));
-    // std::cout << "Ray pos : " << ray.getPos() << "\tdist : " << new_dist.second << std::endl;
-    // if (new_dist.second >= 0 && new_dist.second < obstacle.second && new_dist.first->getNormal(ray.getPos()) * ray.getDirection() < 0)
+
     if (std::get<2>(new_dist) >= 0 && std::get<2>(new_dist) < std::get<2>(obstacle))
     {
       obstacle.swap(new_dist);
@@ -169,6 +156,7 @@ RGBColor RayCastingEngine::compute_color(ray_obj_dist_t &dist, source_vect_t &so
   Ray *ray = std::get<0>(dist);
   double t = std::get<2>(dist);
   position_t pt_pos = ray->getPos() + t * ray->getDirection();
+
   // Determining the illumination of the point / ray
   vector_t V = m_obs_pos - pt_pos;
   V.normalize();
@@ -185,9 +173,6 @@ RGBColor RayCastingEngine::compute_color(ray_obj_dist_t &dist, source_vect_t &so
   auto i_s = source.first->get_intensity();
   auto RV = reflected.getDirection() * V;
   auto LN = (L * N);
-
-  // std ::cout << "i : " << i << "\tL : " << L << "\tk_s : " << k_s << "\tk_d : " << k_d
-  //  << "\talpha : " << alpha << "\tRV : " << RV << "\tV : " << V << "\tN :" << N << "\t L * N : " << L * N * k_d * i_d << std::endl;
 
   if (LN > 0)
   {
@@ -211,8 +196,6 @@ RGBColor RayCastingEngine::step(ray_obj_dist_t &dist)
   // determining all light sources reachable from this point
   std::vector<source_vect_t> reachables;
   get_reachable_sources(*std::get<0>(dist), std::get<1>(dist), pt_pos, reachables);
-  // get_reachable_sources(m_rays[i], distances[i], reachables);
-  // std ::cout << "i : " << i << "\tsize of reachables : " << reachables.size() << std::endl;
 
   unsigned nb_reachables_R = reachables.size();
   // Determining the perfect reflected ray foreach sources
@@ -236,26 +219,10 @@ RGBColor RayCastingEngine::step(ray_obj_dist_t &dist)
     }
     auto k_a = std::get<1>(dist)->get_amb_reflect();
     new_color += m_amb_lighting * k_a * new_color;
-    // if (std::get<0>(dist)->get_fundamental() == nullptr)
-    // {
-    //   std::get<0>(dist)->setColor(new_color);
-    // }
-    // else
-    // {
-    //   std::get<0>(dist)->get_fundamental()->setColor(new_color);
-    // }
     return new_color;
   }
   else
   {
-    // if (std::get<0>(dist)->get_fundamental() == nullptr)
-    // {
-    //   std::get<0>(dist)->setColor(RGB_BLACK);
-    // }
-    // else
-    // {
-    //   std::get<0>(dist)->get_fundamental()->setColor(RGB_BLACK);
-    // }
     return m_background_color;
   }
 }
@@ -276,14 +243,15 @@ RGBColor RayCastingEngine::intermediairy_step(ray_obj_dist_t dist, int deepth)
     position_t pt_pos =
         std::get<0>(dist)->getPos() + std::get<2>(dist) * std::get<0>(dist)->getDirection();
     std::get<0>(dist)->setColor(std::get<1>(dist)->getSurface()->getColor(pt_pos));
+
     Ray reflec_ray = generate_reflection_ray(dist);
     ray_obj_dist_t refleted = get_intersection(&reflec_ray);
     RGBColor reflect_color = intermediairy_step(refleted, deepth - 1);
 
-    double reflect_coef = std::get<1>(dist)->get_reflect();
     // RGBColor ray_color = std::get<0>(dist)->getColor();
     // auto k_a = std::get<1>(dist)->get_amb_reflect();
 
+    double reflect_coef = std::get<1>(dist)->get_reflect();
     RGBColor new_color = step(dist);
     if (std::get<2>(refleted) < std::numeric_limits<double>::infinity() && reflect_coef >0)
     {
