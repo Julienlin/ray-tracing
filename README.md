@@ -15,6 +15,12 @@ For the documentation :
 
 use `make docs`
 
+The exec takes one argument that is the path where the image will be saved :
+
+```bash
+bin/rayTracing images/rayTracing.tga
+```
+
 # Description du projet
 
 Ce projet a pour but de développer un outil de rendu d'image par la technique du tracé de rayon (ray tracing). L'objectif du projet est donc de développer une bibliothèque permettant le rendu d'image.

@@ -36,7 +36,7 @@ $(TARGET): $(OBJECTS) $(TARGETCPP)
 plane: $(OBJECTS) test/plane.cpp
 	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(BINDIR)/$@ $(LIB)
 
-just_plane : $(BUILDDIR)/%.o test/just_plane.cpp
+just_plane : $(OBJECTS) test/just_plane.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -o $(BINDIR)/$@ $^
 
 rayTracing: $(OBJECTS) test/rayTracing.cpp

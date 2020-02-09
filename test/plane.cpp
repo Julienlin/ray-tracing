@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
-  ScenePlane plan(&surf_yellow, position_t(0, 190, 0), E1, E3);
+  ScenePlane plan(&surf_yellow, position_t(0, 190, 0), E1, E3,0,0.1,0.5,1.,100);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
@@ -28,11 +28,7 @@ int main(int argc, char const *argv[])
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
-  // position_t src_pos(100, -10, -100);
-  // LightSource source(src_pos, 1., 1.);
-  // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
-  // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
-  // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
+
   sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
   sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
   sources.push_back(LightSource(position_t(0, -10, 100), 10., 2.));
@@ -40,7 +36,6 @@ int main(int argc, char const *argv[])
   double size_pix = 0.25;
   int nb_pix = 1000;
   int size_screen = nb_pix * size_pix, top_left = size_screen / 2;
-  // std::cout << "size of the screen : " << size_screen << "\ttop left : " << top_left << std::endl;
   position_t screen_pos(-top_left, 0, top_left);
   Screen screen(nb_pix, nb_pix, size_pix, E1, -E3, screen_pos);
   position_t observer_pos(0, -1000, 0);
@@ -66,20 +61,6 @@ int main(int argc, char const *argv[])
   spdlog::get("console")->info(ss.str());
 
   Screen screen_test = engine->get_screen();
-
-  // std::cout << "screen_test.H() * screen_test.W() : " << screen_test.H() * screen_test.W() << std::endl;
-  // std::cout << "screen.H() * screen.W() : " << screen.H() * screen.W() << std::endl;
-
-  // int damn = -1;
-  // for (unsigned i = 0; i < screen.H() * screen.W(); i++)
-  // {
-  //   if (screen_test(i) == screen_test(i + 1))
-  //   {
-  //     damn = i;
-  //     break;
-  //   }
-  // }
-  // std::cout << "damn : " << damn << std::endl;
 
   return 0;
 }

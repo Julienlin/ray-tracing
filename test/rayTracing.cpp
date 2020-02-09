@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60, 0.7);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 1);
   SceneSphere sphere5(&surf_magenta, position_t(-800, 500, 600), 50, 1);
-  ScenePlane plane(&surf_cyan, position_t(0, 300, 0), E1, E3 );
+  ScenePlane plane(&surf_cyan, position_t(0, 300, 0), E1, E3,0,0.01,0.5,1,100 );
   ScenePlane plane_left(&surf_left, position_t(1000, 0, 0), E2, E3);
   ScenePlane plane_right(&surf_left, position_t(-1000, 0, 0), E2, E3);
   objects.push_back(&sphere);
@@ -32,8 +32,8 @@ int main(int argc, char const *argv[])
   objects.push_back(&sphere4);
   objects.push_back(&sphere5);
   objects.push_back(&plane);
-  objects.push_back(&plane_left);
-  objects.push_back(&plane_right);
+  // objects.push_back(&plane_left);
+  // objects.push_back(&plane_right);
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
@@ -42,9 +42,10 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, 1000), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  // sources.push_back(LightSource(position_t(0, 0, 1000), 10., 10.));
+  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
   position_t observer_pos(0, -1000, 0);
+  sources.push_back(LightSource(observer_pos, 10., 2.));
   // sources.push_back(LightSource(observer_pos, 1., 2.));
 
   double size_pix = 0.25;
