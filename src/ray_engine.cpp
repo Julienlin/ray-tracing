@@ -80,9 +80,17 @@ void RayCastingEngine::compute()
     {
       nb_intersec++;
 
-      RGBColor color = intermediairy_step(dist, m_deepth);
+      // RGBColor color = intermediairy_step(dist, m_deepth);
 
-      // step(dist);
+      RGBColor color = step(dist);
+      if (std::get<0>(dist)->get_fundamental() == nullptr)
+      {
+        std::get<0>(dist)->setColor(color);
+      }
+      else
+      {
+        std::get<0>(dist)->get_fundamental()->setColor(color);
+      }
     }
   }
 
