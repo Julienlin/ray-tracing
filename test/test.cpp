@@ -15,12 +15,15 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
-  ScenePlane plan(&surf_black, position_t(0, 500, 0), E1, E3, 1, 0, 0, 0);
-  ScenePlane plan1(&surf_yellow, position_t(0, 0, -300), E1, E2);
+  SurfaceUniformedColor surf_cyan(RGB_GREEN+RGB_BLUE);
+  SurfaceUniformedColor surf_magenta(RGB_RED+RGB_BLUE);
+  ScenePlane plan(&surf_cyan, position_t(0, 500, 0), E1, -E3);
+  ScenePlane plan1(&surf_yellow, position_t(0, 0, -300), E1, -E2);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25, 0.5);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
+  SceneTriangle tri(&surf_yellow, position_t(150,500,400), position_t(-150,500,200), position_t(0,500,0));
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
   objects.push_back(&sphere3);
@@ -28,6 +31,7 @@ int main(int argc, char const *argv[])
 
   // objects.push_back(&plan);
   objects.push_back(&plan1);
+  objects.push_back(&tri);
 
   spdlog::get("console")
       ->info("Creating sources...");
@@ -37,9 +41,11 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(100, 50, 0), 10., 10.));
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
-  sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
-  sources.push_back(LightSource(position_t(0, -10, 100), 10., 2.));
+  // sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
+  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  // sources.push_back(LightSource(position_t(0, -10, 100), 10., 2.));
+  sources.push_back(LightSource(position_t(0, -1000, 100), 10., 2.));
+
 
   double size_pix = 0.25;
   int nb_pix = 1000;
@@ -71,20 +77,6 @@ int main(int argc, char const *argv[])
   spdlog::get("console")->info(ss.str());
 
   Screen screen_test = engine->get_screen();
-
-  // std::cout << "screen_test.H() * screen_test.W() : " << screen_test.H() * screen_test.W() << std::endl;
-  // std::cout << "screen.H() * screen.W() : " << screen.H() * screen.W() << std::endl;
-
-  // int damn = -1;
-  // for (unsigned i = 0; i < screen.H() * screen.W(); i++)
-  // {
-  //   if (screen_test(i) == screen_test(i + 1))
-  //   {
-  //     damn = i;
-  //     break;
-  //   }
-  // }
-  // std::cout << "damn : " << damn << std::endl;
 
   return 0;
 }

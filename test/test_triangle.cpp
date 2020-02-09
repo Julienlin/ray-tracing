@@ -15,15 +15,15 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_green(RGB_GREEN);
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
-  SurfaceUniformedColor surf_cyan(RGB_GREEN+RGB_BLUE);
-  SurfaceUniformedColor surf_magenta(RGB_RED+RGB_BLUE);
+  SurfaceUniformedColor surf_cyan(RGB_GREEN + RGB_BLUE);
+  SurfaceUniformedColor surf_magenta(RGB_RED + RGB_BLUE);
   ScenePlane plan(&surf_cyan, position_t(0, 500, 0), E1, -E3);
   ScenePlane plan1(&surf_yellow, position_t(0, 0, -300), E1, -E2);
   SceneSphere sphere(&surf_red, position_t(50, 190, -100), 25, 0.5);
   SceneSphere sphere2(&surf_green, position_t(100, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(-100, 190, 0), 60);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
-  SceneTriangle tri(&surf_yellow, position_t(150,500,0), position_t(-150,500,0), position_t(0,500,100));
+  SceneTriangle tri(&surf_yellow, position_t(1500, 100, 0), position_t(-1500, 1000, 0), position_t(0, 100, 1500));
   // objects.push_back(&sphere);
   // objects.push_back(&sphere2);
   // objects.push_back(&sphere3);
@@ -44,8 +44,7 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(0, 100, 1000), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
   // sources.push_back(LightSource(position_t(0, -10, 100), 10., 2.));
-  sources.push_back(LightSource(position_t(0, -1000, 100), 10., 2.));
-
+  sources.push_back(LightSource(position_t(0, -1000, 0), 10., 2.));
 
   double size_pix = 0.25;
   int nb_pix = 1000;
