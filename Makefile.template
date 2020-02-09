@@ -47,7 +47,14 @@ just_plane : $(BUILDDIR)/%.o test/just_plane.cpp
 rayTracing: $(OBJECTS) test/rayTracing.cpp
 	$(CXX) $(CXXFLAGS) $(INC) $^ -o $(BINDIR)/$@ $(LIB)
 
+
+docs:
+	rm -rf docs
+	$(MKDIR_P) docs
+	doxygen Doxyfile
+
 clean:
 	rm -rf $(BUILDDIR) $(TARGET) bin/*
+	rm -rf docs
 
 # end
