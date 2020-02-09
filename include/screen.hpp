@@ -1,3 +1,12 @@
+/**
+ * @file screen.hpp
+ * @author Julien Lin
+ * @brief
+ * @version 0.1
+ * @date 2020-02-09
+ *
+ *
+ */
 #ifndef __SCREEN_H_
 #define __SCREEN_H_
 
@@ -22,7 +31,7 @@ private:
                      most pixel. */
   vector_t m_v_W; /**<  Same as m_v_H but in the width direction.*/
 
-  position_t m_screen_pos; /**< position of the of the most top left pixel. It
+  position_t m_screen_pos; /**< position of the top left most pixel. It
                               define the center of the pixel.*/
   std::vector<RGBColor> m_pixels;
 
@@ -32,14 +41,37 @@ private:
 
   std::vector<std::vector<Ray>> m_crossing_rays;
 
+  /**
+   * contains the normal of the screen plane.
+   */
   vector_t m_normal;
 
 public:
+  /**
+   * @brief Construct a new Screen object.
+   *
+   * @param H height in pixels of the screen.
+   * @param W width in pixels of the screen.
+   * @param pix_size size a pixel.
+   * @param v_W the vector on which the width is in the scene.
+   * @param v_H the vector on which the height is in the scene.
+   * @param screen_pos the position of the center of the top left most pixel.
+   */
   Screen(int H, int W, double pix_size, vector_t v_W, vector_t v_H,
          position_t screen_pos);
 
-  ~Screen() {}
+  /**
+   * Get the heigth of the screen.
+   *
+   * @return int
+   */
   int H() { return m_H; }
+
+  /**
+   * @brief Get the width of the screen.
+   *
+   * @return int
+   */
   int W() { return m_W; }
 
   /**
@@ -62,6 +94,12 @@ public:
 
   void add_crossing_ray(int i, Ray &ray);
 
+  /**
+   * @brief Save the screen in a given filename.
+   *
+   * @return true if everthing went well.
+   * @return false if there was an error.
+   */
   bool write(const std::string &);
 
   bool is_intersecting(Ray &ray);
