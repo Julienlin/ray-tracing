@@ -64,9 +64,11 @@ double position_t::norm(const position_t &pos)
 position_t &position_t::normalize()
 {
   double norm = this->norm();
-  x /= norm;
-  y /= norm;
-  z /= norm;
+  if(norm != 0){
+    x /= norm;
+    y /= norm;
+    z /= norm;
+  }
   return *this;
 }
 
