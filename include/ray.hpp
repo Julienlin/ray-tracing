@@ -1,4 +1,11 @@
-
+/**
+ * @file ray.hpp
+ * @author Julien Lin
+ * @brief This contains the implementation of the Ray class.
+ * @version 0.1
+ * @date 2020-02-09
+ *
+ */
 #ifndef __RAY_H_
 #define __RAY_H_
 
