@@ -13,7 +13,7 @@ SRCEXT = cpp
 BINDIR=bin
 
 CXX = g++
-CXXFLAGS = --std=c++11 -g -Wall -fdiagnostics-color=always
+CXXFLAGS = --std=c++11 -O3 -Wall -fdiagnostics-color=always -fopenmp
 INC=-I include
 SOURCES= $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))

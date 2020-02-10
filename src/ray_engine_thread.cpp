@@ -13,15 +13,21 @@ void RayEngineThread::compute()
     int nb_rays = m_rays.size();
 
     spdlog::get("console")->info("Generate fundamental rays...");
-
+    spdlog::get("thread")->info("Generate fundamental rays...");
+    auto timer_beg = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     generate_fundamental_rays();
+    auto timer_end= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    spdlog::get("console")->info(" Fundamental rays generation time to process : {} s", (timer_end-timer_beg)/1000);
+    spdlog::get("thread")->info(" Fundamental rays generation time to process : {} s", (timer_end-timer_beg)/1000);
 
     spdlog::get("console")->info("Rendering scene...");
+    spdlog::get("thread")->info("Rendering scene...");
 
     // Foreach ray check wether it hits something. Wi store the element and the distance of the object.
 
     std::vector<ray_obj_dist_t> distances;
 
+    timer_beg = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     int nb_tt_rays = nb_rays * 2 * m_deepth;
     distances.reserve(nb_tt_rays);
     for (int i = 0; i < nb_rays; i++)
@@ -34,8 +40,12 @@ void RayEngineThread::compute()
         }
         distances.push_back(buf);
     }
+    timer_end= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    spdlog::get("console")->info(" First intersection generation time to process : {} s", (timer_end-timer_beg)/1000);
+    spdlog::get("thread")->info(" First intersection generation time to process : {} s", (timer_end-timer_beg)/1000);
 
     int nb_intersec = 0;
+    timer_beg = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 #pragma omp parallel for reduction(+ \
                                    : nb_intersec)
     for (int i = 0; i < nb_tt_rays; i++)
@@ -53,8 +63,15 @@ void RayEngineThread::compute()
         }
     }
 
-    spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
+    timer_end= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
+    spdlog::get("thread")->info(" Ray simulation time to process : {} s", (timer_end-timer_beg)/1000);
+    spdlog::get("console")->info(" Ray simulation time to process : {} s", (timer_end-timer_beg)/1000);
+
+    spdlog::get("console")->info("nb_intersec : {}", nb_intersec);
+    spdlog::get("thread")->info("nb_intersec : {}", nb_intersec);
+
+    timer_beg = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     // Determine the color for each pixel
 #pragma omp parallel for
     for (unsigned i = 0; i < m_rays.size(); i++)
@@ -63,7 +80,12 @@ void RayEngineThread::compute()
     }
 
     spdlog::get("console")->info("Computing done!");
+    timer_end= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    spdlog::get("thread")->info(" Image generation time to process : {} s", (timer_end-timer_beg)/1000);
+    spdlog::get("console")->info(" Image generation time to process : {} s", (timer_end-timer_beg)/1000);
+
 }
+
 
 void RayEngineThread::get_reachable_sources(
     Ray &ray_incident, SceneBaseObject *obj,

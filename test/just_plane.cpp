@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
   auto console = spdlog::stdout_color_mt("console");
   auto err_logger = spdlog::stderr_color_mt("stderr");
   // Set the default logger to file logger
-  auto file_logger = spdlog::basic_logger_mt("basic_logger", "logs/basic.txt");
+  auto file_logger = spdlog::basic_logger_mt("rayEngine", "logs/rayEngine_justplane.txt");
   // spdlog::set_level(spdlog::level::debug); // Set global log level to debug
   spdlog::set_default_logger(file_logger);
   std::stringstream ss;
@@ -21,12 +21,12 @@ int main(int argc, char const *argv[])
   SurfaceUniformedColor surf_blue(RGB_BLUE);
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
   ScenePlane plan(&surf_blue, position_t(0, 50, 0), E1, E3);
-  ScenePlane plan_left(&surf_yellow, position_t(-250,0,0),E3, E2+0.5*E1);
-  ScenePlane plan_right(&surf_red, position_t(250,0,0),E3, -(E2+0.5*E1));
-  ScenePlane plan_under(&surf_red, position_t(0,0,-259),E1, -E2);
-  SceneSphere sphere(&surf_blue,position_t(0,10,0),10);
+  ScenePlane plan_left(&surf_yellow, position_t(-250, 0, 0), E3, E2 + 0.5 * E1);
+  ScenePlane plan_right(&surf_red, position_t(250, 0, 0), E2 - 0.2 * E1, -E3);
+  ScenePlane plan_under(&surf_red, position_t(0, 0, -200), E1, 10 * E2 + E3);
+  SceneSphere sphere(&surf_blue, position_t(0, 40, 0), 10, 0.4, 0.05);
   objects.push_back(&plan_left);
-  // objects.push_back(&plan_right);
+  objects.push_back(&plan_right);
   objects.push_back(&plan_under);
   objects.push_back(&sphere);
 
@@ -38,9 +38,9 @@ int main(int argc, char const *argv[])
   // sources.push_back(LightSource(position_t(-100, -10, 100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 50, -100), 10., 10.));
   // sources.push_back(LightSource(position_t(0, 1000, 10000), 1., 1.));
-  // sources.push_back(LightSource(position_t(0, 0, -1000), 10., 2.));
+  sources.push_back(LightSource(position_t(0, -1000, 100), 10., 2.));
   // sources.push_back(LightSource(position_t(0, -10, 100), 10., 2.));
-  sources.push_back(LightSource(position_t(0, -1000, 0), 10., 2.));
+  // sources.push_back(LightSource(position_t(0, -1000, 0), 10., 2.));
 
   position_t observer_pos(0, -1000, 0);
   // sources.push_back(LightSource(observer_pos, 10., 2.));

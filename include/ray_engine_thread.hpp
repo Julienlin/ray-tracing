@@ -3,6 +3,7 @@
 
 #include <omp.h>
 #include <ray_engine.hpp>
+#include <chrono>
 
 /**
  * @brief This class implements the ray casting engine.

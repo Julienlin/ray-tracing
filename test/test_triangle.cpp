@@ -6,6 +6,7 @@ int main(int argc, char const *argv[])
   // create color multi threaded logger
   auto console = spdlog::stdout_color_mt("console");
   auto err_logger = spdlog::stderr_color_mt("stderr");
+  auto file_logger = spdlog::basic_logger_mt("rayEngine", "logs/rayEngine_justplane.txt");
   spdlog::get("console")->info("Starting the ray Tracing !");
 
   spdlog::get("console")->info("Creating objects...");

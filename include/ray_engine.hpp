@@ -24,6 +24,7 @@
 #include <sstream>
 #include <tuple>
 #include <vector>
+#include <chrono>
 
 /**
  * @brief This class is the motherclass of ray engine class. This class can be used as an interface for ray engines.
