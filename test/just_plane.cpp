@@ -77,19 +77,5 @@ int main(int argc, char const *argv[])
 
   Screen screen_test = engine->get_screen();
 
-  // std::cout << "screen_test.H() * screen_test.W() : " << screen_test.H() * screen_test.W() << std::endl;
-  // std::cout << "screen.H() * screen.W() : " << screen.H() * screen.W() << std::endl;
-
-  // int damn = -1;
-  // for (unsigned i = 0; i < screen.H() * screen.W(); i++)
-  // {
-  //   if (screen_test(i) == screen_test(i + 1))
-  //   {
-  //     damn = i;
-  //     break;
-  //   }
-  // }
-  // std::cout << "damn : " << damn << std::endl;
-
   return 0;
 }
