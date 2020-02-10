@@ -64,3 +64,4 @@ build/*
 Makefile
 docs/*
 images/*
+logs/*
