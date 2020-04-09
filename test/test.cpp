@@ -1,4 +1,4 @@
-#include "rayTracing.hpp"
+#include <rayTracing.hpp>
 
 int main(int argc, char const *argv[])
 {

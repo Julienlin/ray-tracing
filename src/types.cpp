@@ -1,4 +1,4 @@
-#include "types.hpp"
+#include <types.hpp>
 
 position_t position_t::operator+(const position_t &pos) const
 {
@@ -64,7 +64,8 @@ double position_t::norm(const position_t &pos)
 position_t &position_t::normalize()
 {
   double norm = this->norm();
-  if(norm != 0){
+  if (norm != 0)
+  {
     x /= norm;
     y /= norm;
     z /= norm;

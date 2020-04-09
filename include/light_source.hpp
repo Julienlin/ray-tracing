@@ -1,7 +1,7 @@
 #ifndef __LIGHT_SOURCE_H_
 #define __LIGHT_SOURCE_H_
 
-#include "types.hpp"
+#include <types.hpp>
 /**
  * @brief This class describe a light source in the scene.
  * @class LightSource

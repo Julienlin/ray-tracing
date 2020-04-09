@@ -1,4 +1,4 @@
-#include "screen.hpp"
+#include <screen.hpp>
 
 Screen::Screen(int H, int W, double pix_size, vector_t v_W, vector_t v_H,
                position_t screen_pos)

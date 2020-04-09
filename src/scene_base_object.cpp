@@ -1,4 +1,4 @@
-#include "scene_base_object.hpp"
+#include <scene_base_object.hpp>
 
 SceneBaseObject::SceneBaseObject(ObjectBaseSurface *surface, double refflect, double spec_reflect, double diff_reflect, double amb_reflect, double shine)
     : m_surface(surface), m_reflect(refflect), m_spec_reflect(spec_reflect),

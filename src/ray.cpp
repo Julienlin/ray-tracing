@@ -1,4 +1,4 @@
-#include "ray.hpp"
+#include <ray.hpp>
 
 Ray::Ray()
     : m_pos(POSITION_T_NULL), m_direction(POSITION_T_NULL),

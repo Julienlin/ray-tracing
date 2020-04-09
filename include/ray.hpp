@@ -9,7 +9,7 @@
 #ifndef __RAY_H_
 #define __RAY_H_
 
-#include "types.hpp"
+#include <types.hpp>
 #include <utility>
 /**
  * @brief This class represent a ray in the scene.
