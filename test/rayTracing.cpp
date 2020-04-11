@@ -74,7 +74,7 @@ int main(int argc, char const *argv[])
 
   std::stringstream ss;
 
-  ss << "Wrinting image in " << filename << " done!" << std::ends;
+  ss << "Wrinting image in " << filename << " done!";
 
   spdlog::get("console")->info(ss.str());
 

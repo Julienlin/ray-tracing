@@ -31,9 +31,9 @@ protected:
   double m_diff_reflect;
   double m_amb_reflect;
   double m_shine;
-  static constexpr double MIN_PROXIMITY = 1e-10;
 
 public:
+  static constexpr double MIN_PROXIMITY = 1e-5;
   /**
    * @brief Construct a new Scene Base Object object with no surface trait. this constructor has been implemented in order to use std::vector.
    *
