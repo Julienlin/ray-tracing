@@ -18,18 +18,19 @@ int main(int argc, char const *argv[]) {
   SurfaceUniformedColor surf_yellow(RGB_GREEN + RGB_RED);
   SurfaceUniformedColor surf_cyan(RGB_GREEN + RGB_BLUE);
   SurfaceUniformedColor surf_magenta(RGB_RED + RGB_BLUE);
-  ScenePlane plan(&surf_cyan, position_t(0, 500, 0), E1, E3, 1,0,1,1,100);
+  ScenePlane plan(&surf_cyan, position_t(0, 500, 0), E1, E3, 1, 0, 1, 1, 100);
   ScenePlane plan1(&surf_yellow, position_t(0, 0, -500), E1, -E2);
   SceneSphere sphere(&surf_red, position_t(0, 190, 0), 25, 0.5);
   SceneSphere sphere2(&surf_green, position_t(90, 190, 0), 80);
   SceneSphere sphere3(&surf_blue, position_t(0, 190, 90), 60);
   SceneSphere sphere4(&surf_blue, position_t(-100, 160, 100), 50, 0.7);
-  SceneTriangle tri(&surf_yellow, position_t(-150, 150, 0), position_t(150, 150, 0),
-                     position_t(0, 150,
-                    259.80762113), 0, 1, 0.09);
+  SceneTriangle tri(&surf_yellow, position_t(-150, 150, 0),
+                    position_t(150, 150, 0), position_t(0, 150, 259.80762113),
+                    0, 0, 0.09);
 
-  // SceneTriangle tri(&surf_yellow, position_t(-150, 100, 0),  position_t(150, 150, 0), position_t(0, 200, 260),
-  //                    0, 1, 0.09);
+  SceneTriangle tri2(&surf_magenta, position_t(-150, 100, -100),
+                     position_t(150, 150, -100), position_t(0, 200, 160), 0, 0,
+                     0.09);
 
   objects.push_back(&sphere);
   objects.push_back(&sphere2);
@@ -39,6 +40,7 @@ int main(int argc, char const *argv[]) {
   // objects.push_back(&plan);
   // objects.push_back(&plan1);
   objects.push_back(&tri);
+  objects.push_back(&tri2);
 
   spdlog::get("console")->info("Creating sources...");
   std::vector<LightSource> sources;
